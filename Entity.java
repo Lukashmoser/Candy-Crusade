@@ -16,7 +16,7 @@ public abstract class Entity {
 
 	protected double x; // current x location
 	protected double y; // current y location
-	protected Sprite sprite; // this entity's sprite
+	private Sprite sprite; // this entity's sprite
 	protected double dx; // horizontal speed (px/s) + -> right
 	protected double dy; // vertical speed (px/s) + -> down
 
@@ -101,5 +101,9 @@ public abstract class Entity {
 	 * must be implemented by any class that extends this class
 	 */
 	public abstract void collidedWith(Entity other);
+
+	public void changeSprite(String r){
+		sprite = (SpriteStore.get()).getSprite(r);
+	}
 
 } // Entity class

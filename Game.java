@@ -189,9 +189,7 @@ public class Game extends Canvas {
 
 	public void tryToJump(int player) { // check that the character is on the ground then jump
 		if(player == 1) {
-			if(!playerOneTouchingGround) {
-				return;
-			}
+		
 		} else {
 			
 		}
@@ -296,15 +294,19 @@ public class Game extends Canvas {
 			// respond to playerOne moving character
 			if ((leftPressedOne) && (!rightPressedOne)) {
 				playerOne.setHorizontalMovement(-moveSpeed);
+				playerOne.changeSprite("leftPlayer.gif");
 			} else if ((rightPressedOne) && (!leftPressedOne)) {
 				playerOne.setHorizontalMovement(moveSpeed);
+				playerOne.changeSprite("rightPlayer.gif");
 			} // else
 
 			// respond to playerTwo moving character
 			if ((leftPressedTwo) && (!rightPressedTwo)) {
 				playerTwo.setHorizontalMovement(-moveSpeed);
+				playerTwo.changeSprite("leftPlayer.gif");
 			} else if ((rightPressedTwo) && (!leftPressedTwo)) {
 				playerTwo.setHorizontalMovement(moveSpeed);
+				playerTwo.changeSprite("rightPlayer.gif");
 			} // else
 
 			// if spacebar pressed, try to fire
