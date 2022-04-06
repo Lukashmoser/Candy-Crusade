@@ -114,6 +114,100 @@ public class Game extends Canvas {
 		playerOne = new PlayerEntity(this, "sprites/blankPlayer.gif", 32, 688);
 		playerTwo = new PlayerEntity(this, "sprites/blankPlayer.gif", 400, 688);
 
+		for (int i = 0; i < 1280; i += 40){
+			tileStone1 = new TileEntity(this, "sprites/stone.png", i, 0);
+			entitiies.add(tileStone1);
+		} // W
+		
+		tileStone2 = new TileEntity(this, "sprites/stone.png", 1240, 40);
+		entitiies.add(tileStone2);
+		
+		tileStone3 = new TileEntity(this, "sprites/stone.png", 1240, 80);
+		entitiies.add(tileStone3);
+
+		tileStone4 = new TileEntity(this, "sprites/stone.png", 1240, 120);
+		entitiies.add(tileStone4);
+		
+		for (int i = 0; i < 1040; i += 40){
+			tileStone5 = new TileEntity(this, "sprites/stone.png", i, 160);
+			entitiies.add(tileStone5);
+		} // W
+		tileStone6 = new TileEntity(this, "sprites/stone.png", 1240, 160);
+		entitiies.add(tileStone6);
+
+		tileStone7 = new TileEntity(this, "sprites/stone.png", 0, 200);
+		entitiies.add(tileStone7);
+		tileStone8 = new TileEntity(this, "sprites/stone.png", 1240, 200);
+		entitiies.add(tileStone8);
+
+		tileStone9 = new TileEntity(this, "sprites/stone.png", 0, 240;
+		entitiies.add(tileStone9);
+		tileStone10 = new TileEntity(this, "sprites/stone.png", 1240, 240);
+		entitiies.add(tileStone10);
+		
+		tileStone11 = new TileEntity(this, "sprites/stone.png", 0, 280);
+		entitiies.add(tileStone11);
+		tileStone12 = new TileEntity(this, "sprites/stone.png", 1240, 280);
+		entitiies.add(tileStone12);
+
+		tileStone13 = new TileEntity(this, "sprites/stone.png", 0, 320);
+		entitiies.add(tileStone13);
+		for (int i = 200; i < 1280; i += 40){
+			tileStone14 = new TileEntity(this, "sprites/stone.png", i, 320);
+			entitiies.add(tileStone14);
+		} // W
+
+		tileStone15 = new TileEntity(this, "sprites/stone.png", 0, 360);
+		entitiies.add(tileStone15);
+		tileStone16 = new TileEntity(this, "sprites/stone.png", 1240, 360);
+		entitiies.add(tileStone16);
+
+		tileStone17 = new TileEntity(this, "sprites/stone.png", 0, 400;
+		entitiies.add(tileStone17);
+		tileStone18 = new TileEntity(this, "sprites/stone.png", 1240, 400);
+		entitiies.add(tileStone18);
+		
+		tileStone19 = new TileEntity(this, "sprites/stone.png", 0, 440);
+		entitiies.add(tileStone19);
+		tileStone20 = new TileEntity(this, "sprites/stone.png", 1240, 440);
+		entitiies.add(tileStone20);
+
+		for (int i = 0; i < 560; i += 40){
+			tileStone21 = new TileEntity(this, "sprites/stone.png", i, 480);
+			entitiies.add(tileStone21);
+		} // W
+		tileStone22 = new TileEntity(this, "sprites/stone.png", 1240, 480);
+		entitiies.add(tileStone22);
+
+		tileStone24 = new TileEntity(this, "sprites/stone.png", 0, 520);
+		entitiies.add(tileStone24);
+		for (int i = 560; i < 1040; i += 40){
+			tileStone25 = new TileEntity(this, "sprites/stone.png", i, 520);
+			entitiies.add(tileStone25);
+		} // W
+		tileStone26 = new TileEntity(this, "sprites/stone.png", 1240, 520);
+		entitiies.add(tileStone26);
+
+		tileStone27 = new TileEntity(this, "sprites/stone.png", 0, 560);
+		entitiies.add(tileStone27);
+		tileStone28 = new TileEntity(this, "sprites/stone.png", 1240, 560);
+		entitiies.add(tileStone28);
+
+		tileStone29 = new TileEntity(this, "sprites/stone.png", 0, 600;
+		entitiies.add(tileStone29);
+		tileStone30 = new TileEntity(this, "sprites/stone.png", 1240, 600);
+		entitiies.add(tileStone30);
+		
+		tileStone31 = new TileEntity(this, "sprites/stone.png", 0, 640);
+		entitiies.add(tileStone31);
+		tileStone32 = new TileEntity(this, "sprites/stone.png", 1240, 640);
+		entitiies.add(tileStone32);
+
+		for (int i = 0; i < 1280; i += 40){
+			tileStone33 = new TileEntity(this, "sprites/stone.png", i, 680);
+			entitiies.add(tileStone33);
+		} // W
+
 		entities.add(playerOne);
 		entities.add(playerTwo);
 
