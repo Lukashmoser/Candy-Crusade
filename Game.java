@@ -41,7 +41,7 @@ public class Game extends Canvas {
 	private long lastFire = 0; // time last shot fired
 	private long firingInterval = 300; // interval between shots (ms)
 	private long lastJump = 0; // time last jump was activated
-	private long jumpingInterval = 3000; // interval between jumps (ms)
+	private long jumpingInterval = 3500; // interval between jumps (ms)
 	private long lastBomb = 0; // time last bomb was activated
 	private long bombingInterval = 3000; // interval between bombs (ms)
 	private int alienCount; // # of aliens left on screen
