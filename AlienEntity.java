@@ -1,5 +1,5 @@
 /* AlienEntity.java
- * March 27, 2006
+ * March 27, 2022
  * Represents one of the aliens
  */
 public class AlienEntity extends Entity {
