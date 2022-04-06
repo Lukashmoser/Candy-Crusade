@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 
+/** 
+* Boom
+*/
 public class BombEntity extends Entity {
 
 	private double moveSpeed = -300;
