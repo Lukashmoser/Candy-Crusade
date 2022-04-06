@@ -1,6 +1,6 @@
 /* AlienEntity.java
  * April 1, 2022
- * Represents one of the aliens
+ * Represents one of the green aliens.
  */
 public class AlienEntity extends Entity {
 
