@@ -37,7 +37,7 @@ public class Game extends Canvas {
 														// to remove this loop
 	private Entity playerOne; // first player
 	private Entity playerTwo; // second player
-	private double moveSpeed = 120; // hor. vel. of ship (px/s)
+	private double moveSpeed = 100; // hor. vel. of ship (px/s)
 	private long lastFire = 0; // time last shot fired
 	private long firingInterval = 300; // interval between shots (ms)
 	private long lastJump = 0; // time last jump was activated
