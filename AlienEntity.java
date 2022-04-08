@@ -44,7 +44,7 @@ public class AlienEntity extends Entity {
 		} // if
 
 		// proceed with normal move
-		super.move(delta);
+		super.move();
 	} // move
 
 	/*

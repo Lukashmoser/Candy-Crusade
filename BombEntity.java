@@ -17,8 +17,8 @@ public class BombEntity extends Entity {
 		entities = entitiesIn;
 	}
 
-	public void move(long delta) {
-		super.move(delta);
+	public void move() {
+		super.move();
 
 		if (y < -100) {
 			game.removeEntity(this);

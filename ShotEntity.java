@@ -22,8 +22,8 @@ public class ShotEntity extends Entity {
 	/*
 	 * move input: delta - time elapsed since last move (ms) purpose: move shot
 	 */
-	public void move(long delta) {
-		super.move(delta); // calls the move method in Entity
+	public void move() {
+		super.move(); // calls the move method in Entity
 
 		// if shot moves off top of screen, remove it from entity list
 		if (y < -100) {
