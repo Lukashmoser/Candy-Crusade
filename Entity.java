@@ -5,6 +5,7 @@
  */
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public abstract class Entity {
 
@@ -19,6 +20,8 @@ public abstract class Entity {
 	private Sprite sprite; // this entity's sprite
 	protected double dx; // horizontal speed (px/s) + -> right
 	protected double dy; // vertical speed (px/s) + -> down
+
+	private long delta;
 
 	private Rectangle me = new Rectangle(); // bounding rectangle of
 											// this entity
@@ -39,12 +42,15 @@ public abstract class Entity {
 	 * move input: delta - the amount of time passed in ms output: none purpose:
 	 * after a certain amout of time has passed, update the location
 	 */
-	public void move(long delta) {
+	public void move() {
 		// update location of entity based ov move speeds
 		x += (delta * dx) / 1000;
 		y += (delta * dy) / 1000;
 	} // move
 
+	public void setDelta(long newDelta) {
+		delta = newDelta;
+	}
 	// get and set velocities
 	public void setHorizontalMovement(double newDX) {
 		dx = newDX;
@@ -94,6 +100,42 @@ public abstract class Entity {
 		him.setBounds(other.getX(), other.getY(), other.sprite.getWidth(), other.sprite.getHeight());
 		return me.intersects(him);
 	} // collidesWith
+
+	public String willCollideWithTile(ArrayList entities) {
+		String result = "";
+		
+		for(int i = 0; i < entities.size(); i++){
+			if(entities.get(i) instanceof TileEntity) {
+				him.setBounds(((Entity) entities.get(i)).getX(), ((Entity) entities.get(i)).getY(), ((Entity)entities.get(i)).sprite.getWidth(), ((Entity)entities.get(i)).sprite.getHeight());
+				
+				// checks left for collisions
+				me.setBounds((int) x + ((int) (delta * dx) / 1000) - 2, (int) y, sprite.getWidth(), sprite.getHeight());
+				if(me.intersects(him)){
+					result += "left";
+				}
+
+				// checks top for collisions
+				me.setBounds((int) x, (int) y - (int) (delta * 200) / 1000 - 2, sprite.getWidth(), sprite.getHeight());
+				if(me.intersects(him)){
+					result += "top";
+				}
+
+				// checks right for collisions
+				me.setBounds((int) x, (int) y, sprite.getWidth() + (int) (delta * dx) / 1000 + 2, sprite.getHeight());
+				if(me.intersects(him)){
+					result += "right";
+				}
+
+				// checks bottom for collisions
+				me.setBounds((int) x, (int) y, sprite.getWidth(), sprite.getHeight() + (int) (delta * 100) / 1000 + 2);
+				if(me.intersects(him)){
+					result += "bottom";
+				}
+			}	
+		}
+
+		return result;
+	}
 
 	/*
 	 * collidedWith input: the entity with which this has collided purpose:
