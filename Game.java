@@ -37,8 +37,8 @@ public class Game extends Canvas {
 														// to remove this loop
 	private Entity playerOne; // first player
 	private Entity playerTwo; // second player
-	private String playerOneCollisions;
-	private String playerTwoCollisions;
+	private String playerOneCollisions; // directions of movement that will result in a collision for playerOne
+	private String playerTwoCollisions; // directions of movement that will result in a collision for playerTwp
 	private double moveSpeed = 100; // hor. vel. of ship (px/s)
 	private long lastFire = 0; // time last shot fired
 	private long firingInterval = 301; // interval between shots (ms)
@@ -50,6 +50,8 @@ public class Game extends Canvas {
 	private int alienCount; // # of aliens left on screen
 	private int gravity = 100;
 	private int jumpSpeed = -240;
+	private double initialFuelLevelOne;
+	private double initialFuelLevelTwo;
 
 	private Entity tileStone1;
 	private Entity tileStone2;
@@ -135,6 +137,15 @@ public class Game extends Canvas {
 		createBufferStrategy(2);
 		strategy = getBufferStrategy();
 
+		// TO DO Create loop here that called a specific initEntities based on the current level
+		// then runs gameLoop until the level is completed or they die
+		// if they die the level is cleared and re init
+		// if they complete the level the level is cleared and the next level is loaded
+
+		// initialize fuelLevel
+		initialFuelLevelOne = 500;
+		initialFuelLevelTwo = 100;
+
 		// initialize entities
 		initEntities();
 
@@ -148,10 +159,12 @@ public class Game extends Canvas {
 	 * entities in the game.
 	 */
 	private void initEntities() {
-		// create the ship and put in center of screen
-		playerOne = new PlayerEntity(this, "sprites/blankPlayer.gif", 40, 60);
-		playerTwo = new PlayerEntity(this, "sprites/blankPLayer.gif", 400, 580);
 
+		// create players and and put in correct location
+		playerOne = new PlayerEntity(this, "sprites/blankPlayer.gif", 40, 60, initialFuelLevelOne);
+		playerTwo = new PlayerEntity(this, "sprites/blankPLayer.gif", 400, 580, initialFuelLevelTwo);
+
+		// tip : order in entities is order of drawing(if something needs to be infront put it later)
 		for (int i = 0; i < 1280; i += 40){
 			tileStone1 = new TileEntity(this, "sprites/stone.png", i, 0, "platform");
 			entities.add(tileStone1);
@@ -320,10 +333,15 @@ public class Game extends Canvas {
 	 */
 
 	public void tryToJump(Entity player, String collisions) { // check that the character is on the ground then jump
+		double fuelLevel = ((PlayerEntity) player).getFuelLevel();
+		
 		// add fuel check to jump
-		if(collisions.contains("top")){
+		if(collisions.contains("top") || fuelLevel <= 0){
 			return;
 		} else {
+			fuelLevel -= 1;
+			// update fuel display based on new fuel level
+			((PlayerEntity) player).setFuelLevel(fuelLevel);
 			player.setVerticalMovement(-200);
 		}
 	} // tryToJump
@@ -374,6 +392,14 @@ public class Game extends Canvas {
 				entity.draw(g);
 			} // for
 
+			// draw fuel tank for p1
+			(SpriteStore.get()).getSprite("sprites/P1JetPackBar.png").draw(g, 5, 0);
+			g.fillRect(18, 7, (int) ((((PlayerEntity) playerOne).getFuelLevel() / initialFuelLevelOne) * 100), 12);
+
+			// draw fuel tank for p2
+			(SpriteStore.get()).getSprite("sprites/P2JetPackBar.png").draw(g, 1155, 0);
+			g.fillRect(1168, 7, (int) ((((PlayerEntity) playerTwo).getFuelLevel() / initialFuelLevelTwo) * 100), 12);
+
 			// brute force collisions, compare every entity
 			// against every other entity. If any collisions
 			// are detected notify both entities that it has
@@ -417,8 +443,6 @@ public class Game extends Canvas {
 			// store potential collsions for player character
 			playerOneCollisions = playerOne.willCollideWithTile(entities);
 			playerTwoCollisions = playerTwo.willCollideWithTile(entities);
-
-			System.out.println(playerTwoCollisions);
 
 			// intial movement logic for playerOne
 			playerOne.setHorizontalMovement(0);
@@ -466,12 +490,10 @@ public class Game extends Canvas {
 			// if up arrow pressed set vetical movement to 50
 
 			if (upPressedOne) {
-				System.out.println("jump");
 				tryToJump(playerOne, playerOneCollisions);
 			}
 
 			if (upPressedTwo) {
-				System.out.println("jump");
 				tryToJump(playerTwo, playerTwoCollisions);
 			}
 
