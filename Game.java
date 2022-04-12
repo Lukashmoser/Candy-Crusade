@@ -31,6 +31,11 @@ public class Game extends Canvas {
 	private boolean upPressedTwo = false; // true if up arrow is pressed
 
 	private boolean gameRunning = true;
+	private boolean levelRunning = true;
+	private boolean levelCleared = false;
+	private boolean playerOneCleared = false;
+	private boolean playerTwoCleared = false;
+	private int currentLevel = 1;
 	private ArrayList entities = new ArrayList(); // list of entities
 													// in game
 	private ArrayList removeEntities = new ArrayList(); // list of entities
@@ -40,19 +45,16 @@ public class Game extends Canvas {
 	private String playerOneCollisions; // directions of movement that will result in a collision for playerOne
 	private String playerTwoCollisions; // directions of movement that will result in a collision for playerTwp
 	private double moveSpeed = 100; // hor. vel. of ship (px/s)
-	private long lastFire = 0; // time last shot fired
-	private long firingInterval = 301; // interval between shots (ms)
-	private long lastJumpOne = 0; // time last jump was activated
-	private long lastJumpTwo = 0;
-	private long jumpingInterval = 3500; // interval between jumps (ms)
-	private long lastBomb = 0; // time last bomb was activated
-	private long bombingInterval = 3000; // interval between bombs (ms)
 	private int alienCount; // # of aliens left on screen
 	private int gravity = 100;
-	private int jumpSpeed = -240;
 	private double initialFuelLevelOne;
 	private double initialFuelLevelTwo;
 
+	// dynamic entities
+	private Entity goalOne;
+	private Entity goalTwo;
+
+	// tile entities
 	private Entity tileStone1;
 	private Entity tileStone2;
 	private Entity tileStone3;
@@ -141,135 +143,44 @@ public class Game extends Canvas {
 		// then runs gameLoop until the level is completed or they die
 		// if they die the level is cleared and re init
 		// if they complete the level the level is cleared and the next level is loaded
-
-		// initialize fuelLevel
-		initialFuelLevelOne = 500;
-		initialFuelLevelTwo = 100;
-
-		// initialize entities
-		initEntities();
-
-		// start the game
-		gameLoop();
+		while(gameRunning){
+			initLevel(currentLevel);
+			levelLoop();
+			if(levelCleared = true){
+				currentLevel++;
+			}
+			entities.clear();
+		}
 	} // constructor
 
-	/*
-	 * initEntities input: none output: none purpose: Initialise the starting state
-	 * of the ship and alien entities. Each entity will be added to the array of
-	 * entities in the game.
-	 */
-	private void initEntities() {
 
-		// create players and and put in correct location
-		playerOne = new PlayerEntity(this, "sprites/blankPlayer.gif", 40, 60, initialFuelLevelOne);
-		playerTwo = new PlayerEntity(this, "sprites/blankPLayer.gif", 400, 580, initialFuelLevelTwo);
-
-		// tip : order in entities is order of drawing(if something needs to be infront put it later)
-		for (int i = 0; i < 1280; i += 40){
-			tileStone1 = new TileEntity(this, "sprites/stone.png", i, 0, "platform");
-			entities.add(tileStone1);
-		} // W
-		
-		tileStone2 = new TileEntity(this, "sprites/stone.png", 1240, 40, "wall");
-		entities.add(tileStone2);
-		
-		tileStone3 = new TileEntity(this, "sprites/stone.png", 1240, 80, "wall");
-		entities.add(tileStone3);
-
-		tileStone4 = new TileEntity(this, "sprites/stone.png", 1240, 120, "wall");
-		entities.add(tileStone4);
-		
-		for (int i = 0; i < 1040; i += 40){
-			tileStone5 = new TileEntity(this, "sprites/stone.png", i, 160, "platform");
-			entities.add(tileStone5);
-		} // W
-		tileStone6 = new TileEntity(this, "sprites/stone.png", 1240, 160, "wall");
-		entities.add(tileStone6);
-
-		tileStone7 = new TileEntity(this, "sprites/stone.png", 0, 200, "wall");
-		entities.add(tileStone7);
-		tileStone8 = new TileEntity(this, "sprites/stone.png", 1240, 200, "wall");
-		entities.add(tileStone8);
-
-		tileStone9 = new TileEntity(this, "sprites/stone.png", 0, 240, "wall");
-		entities.add(tileStone9);
-		tileStone10 = new TileEntity(this, "sprites/stone.png", 1240, 240, "wall");
-		entities.add(tileStone10);
-		
-		tileStone11 = new TileEntity(this, "sprites/stone.png", 0, 280, "wall");
-		entities.add(tileStone11);
-		tileStone12 = new TileEntity(this, "sprites/stone.png", 1240, 280, "wall");
-		entities.add(tileStone12);
-
-		tileStone13 = new TileEntity(this, "sprites/stone.png", 0, 320, "wall");
-		entities.add(tileStone13);
-		for (int i = 200; i < 1280; i += 40){
-			tileStone14 = new TileEntity(this, "sprites/stone.png", i, 320, "platform");
-			entities.add(tileStone14);
-		} // W
-
-		tileStone15 = new TileEntity(this, "sprites/stone.png", 0, 360, "wall");
-		entities.add(tileStone15);
-		tileStone16 = new TileEntity(this, "sprites/stone.png", 1240, 360, "wall");
-		entities.add(tileStone16);
-
-		tileStone17 = new TileEntity(this, "sprites/stone.png", 0, 400, "wall");
-		entities.add(tileStone17);
-		tileStone18 = new TileEntity(this, "sprites/stone.png", 1240, 400, "wall");
-		entities.add(tileStone18);
-		
-		tileStone19 = new TileEntity(this, "sprites/stone.png", 0, 440, "wall");
-		entities.add(tileStone19);
-		tileStone20 = new TileEntity(this, "sprites/stone.png", 1240, 440, "wall");
-		entities.add(tileStone20);
-
-		for (int i = 0; i < 560; i += 40){
-			tileStone21 = new TileEntity(this, "sprites/stone.png", i, 480, "platform");
-			entities.add(tileStone21);
-		} // W
-		tileStone22 = new TileEntity(this, "sprites/stone.png", 1240, 480, "wall");
-		entities.add(tileStone22);
-
-		tileStone24 = new TileEntity(this, "sprites/stone.png", 0, 520, "wall");
-		entities.add(tileStone24);
-		for (int i = 560; i < 1040; i += 40){
-			tileStone25 = new TileEntity(this, "sprites/stone.png", i, 520, "platform");
-			entities.add(tileStone25);
-		} // W
-		tileStone26 = new TileEntity(this, "sprites/stone.png", 1240, 520, "wall");
-		entities.add(tileStone26);
-
-		tileStone27 = new TileEntity(this, "sprites/stone.png", 0, 560, "wall");
-		entities.add(tileStone27);
-		tileStone28 = new TileEntity(this, "sprites/stone.png", 1240, 560, "wall");
-		entities.add(tileStone28);
-
-		tileStone29 = new TileEntity(this, "sprites/stone.png", 0, 600, "wall");
-		entities.add(tileStone29);
-		tileStone30 = new TileEntity(this, "sprites/stone.png", 1240, 600, "wall");
-		entities.add(tileStone30);
-		
-		tileStone31 = new TileEntity(this, "sprites/stone.png", 0, 640, "wall");
-		entities.add(tileStone31);
-		tileStone32 = new TileEntity(this, "sprites/stone.png", 1240, 640, "wall");
-		entities.add(tileStone32);
-
-		for (int i = 0; i < 1280; i += 40){
-			tileStone33 = new TileEntity(this, "sprites/stone.png", i, 680, "platform");
-			entities.add(tileStone33);
-		} // W
-
-		entities.add(playerOne);
-		entities.add(playerTwo);
-
-		// create a block of aliens (7x12)
-		/*
-		 * alienCount = 0; for (int row = 0; row < 7; row++) { for (int col = 0; col <
-		 * 12; col++) { Entity alien = new AlienEntity(this, "sprites/alien.gif", 100 +
-		 * (col * 40), 50 + (row * 30), ((row) * 12) + col); entities.add(alien);
-		 * alienCount++; } // for } // outer for
-		 */
-	} // initEntities
+	private void initLevel(int level){
+		switch(level){
+			case 1:
+				initialFuelLevelOne = 100;
+				initialFuelLevelTwo = 100;
+				initEntities(level);
+				break;
+			case 2:
+				initialFuelLevelOne = 100;
+				initialFuelLevelTwo = 100;
+				initEntities(level);
+				levelRunning = true;
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+			case 5:
+				break;
+			case 6:
+				break;
+			case 7:
+				break;
+			case 8:
+				break;
+		}
+	}
 
 	/*
 	 * Notification from a game entity that the logic of the game should be run at
@@ -295,13 +206,24 @@ public class Game extends Canvas {
 	} // notifyDeath
 
 	/*
-	 * Notification that the play has killed all aliens
+	 * register a player that has completed the level
 	 */
-	public void notifyWin() {
-		message = "You exterminated the Pegasus Race.  Good Job!";
-		waitingForKeyPress = true;
-	} // notifyWin
+	public void registerComplete(Entity player) {
+		if(player == playerOne){
+			playerOneCleared = true;
+		} else if(player == playerTwo){
+			playerTwoCleared = true;
+		}
 
+		if(playerOneCleared && playerTwoCleared){
+			notifyLevelComplete();
+		}
+	} // notifyComplete
+
+	// Notification that the a level has been completed
+	public void notifyLevelComplete(){
+		levelRunning = false;
+	}
 	/*
 	 * Notification than an alien has been killed
 	 */
@@ -309,7 +231,7 @@ public class Game extends Canvas {
 		alienCount--;
 
 		if (alienCount == 0) {
-			notifyWin();
+			//notifyWin();
 		} // if
 
 		// speed up existing aliens
@@ -321,16 +243,6 @@ public class Game extends Canvas {
 			} // if
 		} // for
 	} // notifyAlienKilled
-
-	/* Attempt to fire. */
-	/*
-	 * public void tryToFire() { // check that we've waited long enough to fire if
-	 * ((System.currentTimeMillis() - lastFire) < firingInterval) { return; } // if
-	 * 
-	 * // otherwise add a shot lastFire = System.currentTimeMillis(); ShotEntity
-	 * shot = new ShotEntity(this, "sprites/shot.gif", ship.getX() + 10, ship.getY()
-	 * - 30); entities.add(shot); } // tryToFire
-	 */
 
 	public void tryToJump(Entity player, String collisions) { // check that the character is on the ground then jump
 		double fuelLevel = ((PlayerEntity) player).getFuelLevel();
@@ -347,25 +259,16 @@ public class Game extends Canvas {
 	} // tryToJump
 
 	/*
-	 * public void tryToBomb() { if ((System.currentTimeMillis() - lastBomb) <
-	 * bombingInterval) { return; }
-	 * 
-	 * // otherwise add a bomb lastBomb = System.currentTimeMillis(); BombEntity
-	 * bomb = new BombEntity(this, "sprites/missile00.png", ship.getX() + 10,
-	 * ship.getY() - 30, entities); entities.add(bomb); }
-	 */
-
-	/*
 	 * gameLoop input: none output: none purpose: Main game loop. Runs throughout
 	 * game play. Responsible for the following activities: - calculates speed of
 	 * the game loop to update moves - moves the game entities - draws the screen
 	 * contents (entities, text) - updates game events - checks input
 	 */
-	public void gameLoop() {
+	public void levelLoop() {
 		long lastLoopTime = System.currentTimeMillis();
 
 		// keep loop running until game ends
-		while (gameRunning) {
+		while (levelRunning) {
 
 			// calc. time since last update, will be used to calculate
 			// entities movement
@@ -393,10 +296,12 @@ public class Game extends Canvas {
 			} // for
 
 			// draw fuel tank for p1
+			g.setColor(new Color(0, 0, 0));
 			(SpriteStore.get()).getSprite("sprites/P1JetPackBar.png").draw(g, 5, 0);
 			g.fillRect(18, 7, (int) ((((PlayerEntity) playerOne).getFuelLevel() / initialFuelLevelOne) * 100), 12);
 
 			// draw fuel tank for p2
+			g.setColor(Color.pink);
 			(SpriteStore.get()).getSprite("sprites/P2JetPackBar.png").draw(g, 1155, 0);
 			g.fillRect(1168, 7, (int) ((((PlayerEntity) playerTwo).getFuelLevel() / initialFuelLevelTwo) * 100), 12);
 
@@ -500,6 +405,12 @@ public class Game extends Canvas {
 			if (bPressed) {
 				// tryToBomb();
 			}
+
+			//check if they have completed the level
+			/*if(playerOne.getCompletition() && playerTwo.getCompletion()){
+				
+			}*/
+
 			// pause
 			try {
 				Thread.sleep(16);
@@ -518,7 +429,7 @@ public class Game extends Canvas {
 		// clear out any existing entities and initalize a new set
 		entities.clear();
 
-		initEntities();
+		initLevel(1);
 
 		// blank out any keyboard settings that might exist
 		leftPressedOne = false;
@@ -646,7 +557,139 @@ public class Game extends Canvas {
 		} // keyTyped
 
 	} // class KeyInputHandler
+	/*
+	 * initEntities input: none output: none purpose: Initialise the starting state
+	 * of the ship and alien entities. Each entity will be added to the array of
+	 * entities in the game.
+	 */
+	private void initEntities(int level) {
+		switch(level){
+			case 1:
+				// create players and and put in correct location
+				playerOne = new PlayerEntity(this, "sprites/blankPlayer.gif", 40, 60, initialFuelLevelOne);
+				playerTwo = new PlayerEntity(this, "sprites/blankPLayer.gif", 400, 580, initialFuelLevelTwo);
 
+				// create goal location for each player
+				goalOne = new GoalEntity("sprites/blankPlayer.gif", 300, 80, playerOne);
+				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 800, 600, playerTwo);
+
+				// tip : order in entities is order of drawing(if something needs to be infront put it later)
+				for (int i = 0; i < 1280; i += 40){
+					tileStone1 = new TileEntity(this, "sprites/stone.png", i, 0, "platform");
+					entities.add(tileStone1);
+				} // W
+				
+				tileStone2 = new TileEntity(this, "sprites/stone.png", 1240, 40, "wall");
+				entities.add(tileStone2);
+				
+				tileStone3 = new TileEntity(this, "sprites/stone.png", 1240, 80, "wall");
+				entities.add(tileStone3);
+
+				tileStone4 = new TileEntity(this, "sprites/stone.png", 1240, 120, "wall");
+				entities.add(tileStone4);
+				
+				for (int i = 0; i < 1040; i += 40){
+					tileStone5 = new TileEntity(this, "sprites/stone.png", i, 160, "platform");
+					entities.add(tileStone5);
+				} // W
+				tileStone6 = new TileEntity(this, "sprites/stone.png", 1240, 160, "wall");
+				entities.add(tileStone6);
+
+				tileStone7 = new TileEntity(this, "sprites/stone.png", 0, 200, "wall");
+				entities.add(tileStone7);
+				tileStone8 = new TileEntity(this, "sprites/stone.png", 1240, 200, "wall");
+				entities.add(tileStone8);
+
+				tileStone9 = new TileEntity(this, "sprites/stone.png", 0, 240, "wall");
+				entities.add(tileStone9);
+				tileStone10 = new TileEntity(this, "sprites/stone.png", 1240, 240, "wall");
+				entities.add(tileStone10);
+				
+				tileStone11 = new TileEntity(this, "sprites/stone.png", 0, 280, "wall");
+				entities.add(tileStone11);
+				tileStone12 = new TileEntity(this, "sprites/stone.png", 1240, 280, "wall");
+				entities.add(tileStone12);
+
+				tileStone13 = new TileEntity(this, "sprites/stone.png", 0, 320, "wall");
+				entities.add(tileStone13);
+				for (int i = 200; i < 1280; i += 40){
+					tileStone14 = new TileEntity(this, "sprites/stone.png", i, 320, "platform");
+					entities.add(tileStone14);
+				} // W
+
+				tileStone15 = new TileEntity(this, "sprites/stone.png", 0, 360, "wall");
+				entities.add(tileStone15);
+				tileStone16 = new TileEntity(this, "sprites/stone.png", 1240, 360, "wall");
+				entities.add(tileStone16);
+
+				tileStone17 = new TileEntity(this, "sprites/stone.png", 0, 400, "wall");
+				entities.add(tileStone17);
+				tileStone18 = new TileEntity(this, "sprites/stone.png", 1240, 400, "wall");
+				entities.add(tileStone18);
+				
+				tileStone19 = new TileEntity(this, "sprites/stone.png", 0, 440, "wall");
+				entities.add(tileStone19);
+				tileStone20 = new TileEntity(this, "sprites/stone.png", 1240, 440, "wall");
+				entities.add(tileStone20);
+
+				for (int i = 0; i < 560; i += 40){
+					tileStone21 = new TileEntity(this, "sprites/stone.png", i, 480, "platform");
+					entities.add(tileStone21);
+				} // W
+				tileStone22 = new TileEntity(this, "sprites/stone.png", 1240, 480, "wall");
+				entities.add(tileStone22);
+
+				tileStone24 = new TileEntity(this, "sprites/stone.png", 0, 520, "wall");
+				entities.add(tileStone24);
+				for (int i = 560; i < 1040; i += 40){
+					tileStone25 = new TileEntity(this, "sprites/stone.png", i, 520, "platform");
+					entities.add(tileStone25);
+				} // W
+				tileStone26 = new TileEntity(this, "sprites/stone.png", 1240, 520, "wall");
+				entities.add(tileStone26);
+
+				tileStone27 = new TileEntity(this, "sprites/stone.png", 0, 560, "wall");
+				entities.add(tileStone27);
+				tileStone28 = new TileEntity(this, "sprites/stone.png", 1240, 560, "wall");
+				entities.add(tileStone28);
+
+				tileStone29 = new TileEntity(this, "sprites/stone.png", 0, 600, "wall");
+				entities.add(tileStone29);
+				tileStone30 = new TileEntity(this, "sprites/stone.png", 1240, 600, "wall");
+				entities.add(tileStone30);
+				
+				tileStone31 = new TileEntity(this, "sprites/stone.png", 0, 640, "wall");
+				entities.add(tileStone31);
+				tileStone32 = new TileEntity(this, "sprites/stone.png", 1240, 640, "wall");
+				entities.add(tileStone32);
+
+				for (int i = 0; i < 1280; i += 40){
+					tileStone33 = new TileEntity(this, "sprites/stone.png", i, 680, "platform");
+					entities.add(tileStone33);
+				} // W
+
+				entities.add(goalOne);
+				entities.add(goalTwo);
+
+				entities.add(playerOne);
+				entities.add(playerTwo);
+				break;
+			case 2:
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+			case 5:
+				break;
+			case 6:
+				break;
+			case 7:
+				break;
+			case 8:
+				break;
+		}
+	} // initEntities
 	/**
 	 * Main Program
 	 */

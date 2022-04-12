@@ -49,7 +49,11 @@ public class PlayerEntity extends Entity {
 	 * purpose: notification that the player's ship has collided with something
 	 */
 	public void collidedWith(Entity other) {
-		
+		if(other instanceof GoalEntity){
+			if(((GoalEntity) other).getTarget() == this){
+				game.registerComplete(this);
+			}
+		}
 	} // collidedWith
 
 } // ShipEntity class
