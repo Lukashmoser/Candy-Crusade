@@ -53,6 +53,8 @@ public class PlayerEntity extends Entity {
 			if(((GoalEntity) other).getTarget() == this){
 				game.registerComplete(this);
 			}
+		} else if (other instanceof DeathEntity){
+			game.notifyDeath();
 		}
 	} // collidedWith
 

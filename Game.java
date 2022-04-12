@@ -53,6 +53,7 @@ public class Game extends Canvas {
 	// dynamic entities
 	private Entity goalOne;
 	private Entity goalTwo;
+	private Entity DeathEntity;
 
 	// tile entities
 	private Entity tileStone1;
@@ -573,6 +574,7 @@ public class Game extends Canvas {
 				goalOne = new GoalEntity("sprites/blankPlayer.gif", 300, 80, playerOne);
 				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 800, 600, playerTwo);
 
+				entities.add(new DeathEntity("sprites/leftPlayer.gif", 100, 600));
 				// tip : order in entities is order of drawing(if something needs to be infront put it later)
 				for (int i = 0; i < 1280; i += 40){
 					tileStone1 = new TileEntity(this, "sprites/stone.png", i, 0, "platform");
@@ -585,8 +587,7 @@ public class Game extends Canvas {
 				tileStone3 = new TileEntity(this, "sprites/stone.png", 1240, 80, "wall");
 				entities.add(tileStone3);
 
-				tileStone4 = new TileEntity(this, "sprites/stone.png", 1240, 120, "wall");
-				entities.add(tileStone4);
+				entities.add(new TileEntity(this, "sprites/stone.png", 1240, 120, "wall"));
 				
 				for (int i = 0; i < 1040; i += 40){
 					tileStone5 = new TileEntity(this, "sprites/stone.png", i, 160, "platform");
