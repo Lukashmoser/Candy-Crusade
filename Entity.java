@@ -43,7 +43,7 @@ public abstract class Entity {
 	 * after a certain amout of time has passed, update the location
 	 */
 	public void move() {
-		// update location of entity based ov move speeds
+		// update location of entity based on move speeds
 		x += (delta * dx) / 1000;
 		y += (delta * dy) / 1000;
 	} // move
@@ -102,19 +102,26 @@ public abstract class Entity {
 		return me.intersects(him);
 	} // collidesWith
 
-	public String willCollideWithTile(ArrayList entities) {
+	public String willCollideWithSomething(ArrayList entities) {
 		String result = "";
 		
 		for(int i = 0; i < entities.size(); i++){
-			if(entities.get(i) instanceof TileEntity) {
+			
+			if(entities.get(i) instanceof TileEntity || entities.get(i) instanceof MovableBlockEntity || (this instanceof MovableBlockEntity && entities.get(i) instanceof PlayerEntity)) {
 				him.setBounds(((Entity) entities.get(i)).getX(), ((Entity) entities.get(i)).getY(), ((Entity)entities.get(i)).sprite.getWidth(), ((Entity)entities.get(i)).sprite.getHeight());
 				
 				// checks left for collisions
 				me.setBounds((int) x + ((int) (delta * dx) / 1000) - 2, (int) y, sprite.getWidth(), sprite.getHeight());
 				if(me.intersects(him)){
-					result += "left";
+					if(entities.get(i) instanceof MovableBlockEntity && !(this instanceof MovableBlockEntity)){
+						if(!((MovableBlockEntity) entities.get(i)).attemptMove(this.getHorizontalMovement())){
+							result += "left";
+						}
+					} else if(!(entities.get(i) instanceof MovableBlockEntity && this instanceof MovableBlockEntity)){
+						result += "left";
+					}
 				}
-
+				
 				// checks top for collisions
 				me.setBounds((int) x, (int) y - (int) (delta * 200) / 1000 - 2, sprite.getWidth(), sprite.getHeight());
 				if(me.intersects(him)){
@@ -124,7 +131,13 @@ public abstract class Entity {
 				// checks right for collisions
 				me.setBounds((int) x, (int) y, sprite.getWidth() + (int) (delta * dx) / 1000 + 2, sprite.getHeight());
 				if(me.intersects(him)){
-					result += "right";
+					if(entities.get(i) instanceof MovableBlockEntity && !(this instanceof MovableBlockEntity)){
+						if(!((MovableBlockEntity) entities.get(i)).attemptMove(this.getHorizontalMovement())){
+							result += "right";
+						}
+					} else if(!(entities.get(i) instanceof MovableBlockEntity && this instanceof MovableBlockEntity)){
+						result += "right";
+					}
 				}
 
 				// checks bottom for collisions
@@ -132,7 +145,7 @@ public abstract class Entity {
 				if(me.intersects(him)){
 					result += "bottom";
 				}
-			}	
+			}
 		}
 
 		return result;

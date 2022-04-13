@@ -154,6 +154,9 @@ public class Game extends Canvas {
 		}
 	} // constructor
 
+	public ArrayList getEntities(){
+		return entities;
+	}
 
 	private void initLevel(int level){
 		switch(level){
@@ -347,8 +350,8 @@ public class Game extends Canvas {
 			strategy.show();
 
 			// store potential collsions for player character
-			playerOneCollisions = playerOne.willCollideWithTile(entities);
-			playerTwoCollisions = playerTwo.willCollideWithTile(entities);
+			playerOneCollisions = playerOne.willCollideWithSomething(entities);
+			playerTwoCollisions = playerTwo.willCollideWithSomething(entities);
 
 			// intial movement logic for playerOne
 			playerOne.setHorizontalMovement(0);
@@ -574,7 +577,9 @@ public class Game extends Canvas {
 				goalOne = new GoalEntity("sprites/blankPlayer.gif", 300, 80, playerOne);
 				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 800, 600, playerTwo);
 
-				entities.add(new DeathEntity("sprites/leftPlayer.gif", 100, 600));
+				entities.add(new DeathEntity("sprites/leftPlayer.gif", 100, 600));// death entity
+
+				entities.add(new MovableBlockEntity("sprites/stone.png", 800, 640, this));
 				// tip : order in entities is order of drawing(if something needs to be infront put it later)
 				for (int i = 0; i < 1280; i += 40){
 					tileStone1 = new TileEntity(this, "sprites/stone.png", i, 0, "platform");
