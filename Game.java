@@ -163,8 +163,8 @@ public class Game extends Canvas {
 				initEntities(level);
 				break;
 			case 2:
-				initialFuelLevelOne = 100;
-				initialFuelLevelTwo = 100;
+				initialFuelLevelOne = 300;
+				initialFuelLevelTwo = 300;
 				initEntities(level);
 				levelRunning = true;
 				break;
@@ -676,7 +676,73 @@ public class Game extends Canvas {
 				entities.add(playerTwo);
 				break;
 			case 2:
-				break;
+			playerOne = new PlayerEntity(this, "sprites/BaseFrontCharacter.png", 0, 0, initialFuelLevelOne);
+			playerTwo = new PlayerEntity(this, "sprites/blankPLayer.gif", 0, 80, initialFuelLevelTwo);
+			
+			goalOne = new GoalEntity("sprites/blankPlayer.gif", 0, 280, playerOne);
+			goalTwo = new GoalEntity("sprites/blankPlayer.gif", 80, 280, playerTwo);
+			
+			for (int i = 0; i < 640; i += 40){
+				entities.add(new TileEntity(this, "sprites/stone.png", i, 160, "platform"));
+			} // W
+			for (int i = 200; i < 520; i += 40){
+				entities.add(new TileEntity(this, "sprites/stone.png", 600, i, "wall"));
+			} // W
+			for (int i = 640; i < 1160; i += 40){
+			entities.add(new TileEntity(this, "sprites/stone.png", i, 480, "platform"));
+			} // W
+			for (int i = 320; i < 520; i += 40){
+				entities.add(new TileEntity(this, "sprites/stone.png", 1160, i, "wall"));
+			} // W
+			
+			for (int i = 640; i < 760; i += 40){
+				entities.add(new TileEntity(this, "sprites/stone.png", i, 320, "platform"));
+			} // W
+			
+			entities.add(new TileEntity(this, "sprites/stone.png", 880, 320, "platform"));
+			entities.add(new TileEntity(this, "sprites/stone.png", 920, 320, "platform"));
+			
+			for (int i = 1080; i < 1160; i += 40){
+				entities.add(new TileEntity(this, "sprites/stone.png", i, 320, "platform"));
+			} // W
+			
+			for (int i = 640; i < 1160; i += 40){
+				entities.add(new DeathEntity("sprites/death.png", i, 440));
+			} // W
+			
+			for (int i = 640; i < 720; i += 40){
+				entities.add(new TileEntity(this, "sprites/stone.png", 0, i, "wall"));
+			} // W
+			
+			for (int i = 40; i < 400; i += 40){
+				entities.add(new DeathEntity("sprites/death.png", i, 680));
+			} // W
+			
+			for (int i = 640; i < 720; i += 40){
+				entities.add(new TileEntity(this, "sprites/stone.png", 400, i, "wall"));
+			} // W
+			
+			for (int i = 440; i < 1280; i += 40){
+				entities.add(new TileEntity(this, "sprites/stone.png", i, 680, "platform"));
+			} // W
+			
+			for (int i = 0; i < 120; i += 40){
+				entities.add(new TileEntity(this, "sprites/stone.png", i, 440, "platform"));
+			} // W
+			
+			for (int i = 200; i < 280; i += 40){
+				entities.add(new TileEntity(this, "sprites/stone.png", i, 440, "platform"));
+			} // W
+			for (int i = 360; i < 440; i += 40){
+				entities.add(new TileEntity(this, "sprites/stone.png", i, 480, "platform"));
+			} // W
+			
+			entities.add(goalOne);
+			entities.add(goalTwo);
+			
+			entities.add(playerOne);
+			entities.add(playerTwo);
+			break;
 			case 3:
 				break;
 			case 4:
