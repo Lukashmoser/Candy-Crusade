@@ -377,6 +377,7 @@ public class Game extends Canvas {
 
 			// respond to playerOne moving character left or right
 			if ((leftPressedOne) && (!rightPressedOne) && !(playerOneCollisions.contains("left"))) {
+				System.out.println(playerOneCollisions);
 				playerOne.setHorizontalMovement(-moveSpeed);
 				playerOne.changeSprite("sprites/leftPlayer.gif");
 			} else if ((rightPressedOne) && (!leftPressedOne) && !(playerOneCollisions.contains("right"))) {
@@ -388,6 +389,7 @@ public class Game extends Canvas {
 
 			// respond to playerTwo moving character left or right
 			if ((leftPressedTwo) && (!rightPressedTwo) && !(playerTwoCollisions.contains("left"))) {
+				System.out.println(playerTwoCollisions);
 				playerTwo.setHorizontalMovement(-moveSpeed);
 				playerTwo.changeSprite("sprites/leftPlayer.gif");
 			} else if ((rightPressedTwo) && (!leftPressedTwo) && !(playerTwoCollisions.contains("right"))) {

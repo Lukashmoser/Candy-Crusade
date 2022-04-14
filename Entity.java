@@ -111,7 +111,7 @@ public abstract class Entity {
 				him.setBounds(((Entity) entities.get(i)).getX(), ((Entity) entities.get(i)).getY(), ((Entity)entities.get(i)).sprite.getWidth(), ((Entity)entities.get(i)).sprite.getHeight());
 				
 				// checks left for collisions
-				me.setBounds((int) x + ((int) (delta * dx) / 1000) - 2, (int) y, sprite.getWidth(), sprite.getHeight());
+				me.setBounds((int) x + ((int) (delta * dx) / 1000) - 5, (int) y, sprite.getWidth(), sprite.getHeight());
 				if(me.intersects(him)){
 					if(entities.get(i) instanceof MovableBlockEntity && !(this instanceof MovableBlockEntity)){
 						if(!((MovableBlockEntity) entities.get(i)).attemptMove(this.getHorizontalMovement())){
@@ -129,7 +129,7 @@ public abstract class Entity {
 				}
 
 				// checks right for collisions
-				me.setBounds((int) x, (int) y, sprite.getWidth() + (int) (delta * dx) / 1000 + 2, sprite.getHeight());
+				me.setBounds((int) x, (int) y, sprite.getWidth() + (int) (delta * dx) / 1000 + 5, sprite.getHeight());
 				if(me.intersects(him)){
 					if(entities.get(i) instanceof MovableBlockEntity && !(this instanceof MovableBlockEntity)){
 						if(!((MovableBlockEntity) entities.get(i)).attemptMove(this.getHorizontalMovement())){
