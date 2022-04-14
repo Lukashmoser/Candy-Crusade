@@ -43,17 +43,16 @@ public class Game extends Canvas {
 	private Entity playerOne; // first player
 	private Entity playerTwo; // second player
 	private String playerOneCollisions; // directions of movement that will result in a collision for playerOne
-	private String playerTwoCollisions; // directions of movement that will result in a collision for playerTwp
+	private String playerTwoCollisions; // directions of movement that will result in a collision for playerTwo
 	private double moveSpeed = 100; // hor. vel. of ship (px/s)
 	private int alienCount; // # of aliens left on screen
-	private int gravity = 100;
+	private int gravity = 150;
 	private double initialFuelLevelOne;
 	private double initialFuelLevelTwo;
 
 	// dynamic entities
 	private Entity goalOne;
 	private Entity goalTwo;
-	private Entity DeathEntity;
 
 	// tile entities
 	private Entity tileStone1;
@@ -147,10 +146,9 @@ public class Game extends Canvas {
 		while(gameRunning){
 			initLevel(currentLevel);
 			levelLoop();
-			if(levelCleared = true){
+			if(levelCleared){
 				currentLevel++;
 			}
-			entities.clear();
 		}
 	} // constructor
 
@@ -159,17 +157,22 @@ public class Game extends Canvas {
 	}
 
 	private void initLevel(int level){
+		// reset variables that remain constant between level
+		entities.clear();
+		removeEntities.clear();
+		playerOneCleared = false;
+		playerTwoCleared = false;
+		levelCleared = false;
+
+		// reset and set varibles that change with each level
 		switch(level){
 			case 1:
 				initialFuelLevelOne = 100;
 				initialFuelLevelTwo = 100;
-				initEntities(level);
 				break;
 			case 2:
 				initialFuelLevelOne = 300;
 				initialFuelLevelTwo = 300;
-				initEntities(level);
-				levelRunning = true;
 				break;
 			case 3:
 				break;
@@ -184,6 +187,10 @@ public class Game extends Canvas {
 			case 8:
 				break;
 		}
+
+		// init and start level
+		initEntities(level);
+		levelRunning = true;
 	}
 
 	/*
@@ -205,8 +212,9 @@ public class Game extends Canvas {
 	 * Notification that the player has died.
 	 */
 	public void notifyDeath() {
-		message = "You died to a horse, come on your better than that.";
+		message = "You died.";
 		waitingForKeyPress = true;
+		levelRunning = false;
 	} // notifyDeath
 
 	/*
@@ -218,16 +226,12 @@ public class Game extends Canvas {
 		} else if(player == playerTwo){
 			playerTwoCleared = true;
 		}
-
 		if(playerOneCleared && playerTwoCleared){
-			notifyLevelComplete();
+			levelRunning = false;
+			levelCleared = true;
 		}
 	} // notifyComplete
 
-	// Notification that the a level has been completed
-	public void notifyLevelComplete(){
-		levelRunning = false;
-	}
 	/*
 	 * Notification than an alien has been killed
 	 */
@@ -430,10 +434,11 @@ public class Game extends Canvas {
 	 * data
 	 */
 	private void startGame() {
+		System.out.println("started game");
 		// clear out any existing entities and initalize a new set
 		entities.clear();
 
-		initLevel(1);
+		initLevel(currentLevel);
 
 		// blank out any keyboard settings that might exist
 		leftPressedOne = false;
@@ -465,7 +470,7 @@ public class Game extends Canvas {
 				return;
 			} // if
 
-			// respond to move left, right or fire
+			// respond to move left, right or jump
 			if (e.getKeyCode() == KeyEvent.VK_A) {
 				leftPressedOne = true;
 			} // if
@@ -541,13 +546,12 @@ public class Game extends Canvas {
 		} // keyReleased
 
 		public void keyTyped(KeyEvent e) {
-
 			// if waiting for key press to start game
 			if (waitingForKeyPress) {
 				if (pressCount == 1) {
 					waitingForKeyPress = false;
 					startGame();
-					pressCount = 0;
+					pressCount = 1;
 				} else {
 					pressCount++;
 				} // else
@@ -681,73 +685,75 @@ public class Game extends Canvas {
 				entities.add(playerTwo);
 				break;
 			case 2:
-			playerOne = new PlayerEntity(this, "sprites/BaseFrontCharacter.png", 0, 0, initialFuelLevelOne);
-			playerTwo = new PlayerEntity(this, "sprites/blankPLayer.gif", 0, 80, initialFuelLevelTwo);
-			
-			goalOne = new GoalEntity("sprites/blankPlayer.gif", 0, 280, playerOne);
-			goalTwo = new GoalEntity("sprites/blankPlayer.gif", 80, 280, playerTwo);
-			
-			for (int i = 0; i < 640; i += 40){
-				entities.add(new TileEntity(this, "sprites/stone.png", i, 160, "platform"));
-			} // W
-			for (int i = 200; i < 520; i += 40){
-				entities.add(new TileEntity(this, "sprites/stone.png", 600, i, "wall"));
-			} // W
-			for (int i = 640; i < 1160; i += 40){
-			entities.add(new TileEntity(this, "sprites/stone.png", i, 480, "platform"));
-			} // W
-			for (int i = 320; i < 520; i += 40){
-				entities.add(new TileEntity(this, "sprites/stone.png", 1160, i, "wall"));
-			} // W
-			
-			for (int i = 640; i < 760; i += 40){
-				entities.add(new TileEntity(this, "sprites/stone.png", i, 320, "platform"));
-			} // W
-			
-			entities.add(new TileEntity(this, "sprites/stone.png", 880, 320, "platform"));
-			entities.add(new TileEntity(this, "sprites/stone.png", 920, 320, "platform"));
-			
-			for (int i = 1080; i < 1160; i += 40){
-				entities.add(new TileEntity(this, "sprites/stone.png", i, 320, "platform"));
-			} // W
-			
-			for (int i = 640; i < 1160; i += 40){
-				entities.add(new DeathEntity("sprites/death.png", i, 440));
-			} // W
-			
-			for (int i = 640; i < 720; i += 40){
-				entities.add(new TileEntity(this, "sprites/stone.png", 0, i, "wall"));
-			} // W
-			
-			for (int i = 40; i < 400; i += 40){
-				entities.add(new DeathEntity("sprites/death.png", i, 680));
-			} // W
-			
-			for (int i = 640; i < 720; i += 40){
-				entities.add(new TileEntity(this, "sprites/stone.png", 400, i, "wall"));
-			} // W
-			
-			for (int i = 440; i < 1280; i += 40){
-				entities.add(new TileEntity(this, "sprites/stone.png", i, 680, "platform"));
-			} // W
-			
-			for (int i = 0; i < 120; i += 40){
-				entities.add(new TileEntity(this, "sprites/stone.png", i, 440, "platform"));
-			} // W
-			
-			for (int i = 200; i < 280; i += 40){
-				entities.add(new TileEntity(this, "sprites/stone.png", i, 440, "platform"));
-			} // W
-			for (int i = 360; i < 440; i += 40){
+				playerOne = new PlayerEntity(this, "sprites/BaseFrontCharacter.png", 0, 0, initialFuelLevelOne);
+				playerTwo = new PlayerEntity(this, "sprites/blankPLayer.gif", 0, 80, initialFuelLevelTwo);
+				
+				goalOne = new GoalEntity("sprites/blankPlayer.gif", 0, 280, playerOne);
+				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 80, 280, playerTwo);
+				
+				for (int i = 0; i < 640; i += 40){
+					entities.add(new TileEntity(this, "sprites/stone.png", i, 160, "platform"));
+				} // W
+				for (int i = 200; i < 520; i += 40){
+					entities.add(new TileEntity(this, "sprites/stone.png", 600, i, "wall"));
+				} // W
+				for (int i = 640; i < 1160; i += 40){
 				entities.add(new TileEntity(this, "sprites/stone.png", i, 480, "platform"));
-			} // W
-			
-			entities.add(goalOne);
-			entities.add(goalTwo);
-			
-			entities.add(playerOne);
-			entities.add(playerTwo);
-			break;
+				} // W
+				for (int i = 320; i < 520; i += 40){
+					entities.add(new TileEntity(this, "sprites/stone.png", 1160, i, "wall"));
+				} // W
+				
+				for (int i = 640; i < 760; i += 40){
+					entities.add(new TileEntity(this, "sprites/stone.png", i, 320, "platform"));
+				} // W
+				
+				entities.add(new TileEntity(this, "sprites/stone.png", 880, 320, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 920, 320, "platform"));
+				
+				for (int i = 1080; i < 1160; i += 40){
+					entities.add(new TileEntity(this, "sprites/stone.png", i, 320, "platform"));
+				} // W
+				
+				for (int i = 640; i < 1160; i += 40){
+					entities.add(new DeathEntity("sprites/death.png", i, 440));
+				} // W
+				
+				for (int i = 640; i < 720; i += 40){
+					entities.add(new TileEntity(this, "sprites/stone.png", 0, i, "wall"));
+				} // W
+				
+				for (int i = 40; i < 400; i += 40){
+					entities.add(new DeathEntity("sprites/death.png", i, 680));
+				} // W
+				
+				for (int i = 640; i < 720; i += 40){
+					entities.add(new TileEntity(this, "sprites/stone.png", 400, i, "wall"));
+				} // W
+				
+				for (int i = 440; i < 1280; i += 40){
+					entities.add(new TileEntity(this, "sprites/stone.png", i, 680, "platform"));
+				} // W
+				
+				for (int i = 0; i < 120; i += 40){
+					entities.add(new TileEntity(this, "sprites/stone.png", i, 440, "platform"));
+				} // W
+				
+				for (int i = 200; i < 280; i += 40){
+					entities.add(new TileEntity(this, "sprites/stone.png", i, 440, "platform"));
+				} // W
+				for (int i = 360; i < 440; i += 40){
+					entities.add(new TileEntity(this, "sprites/stone.png", i, 480, "platform"));
+				} // W
+				
+				entities.add(new MovableBlockEntity("sprites/box.png", 840, 600, this));
+
+				entities.add(goalOne);
+				entities.add(goalTwo);
+				
+				entities.add(playerOne);
+				entities.add(playerTwo);
+				break;
 			case 3:
 				break;
 			case 4:
