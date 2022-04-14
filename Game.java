@@ -44,7 +44,7 @@ public class Game extends Canvas {
 	private Entity playerTwo; // second player
 	private String playerOneCollisions; // directions of movement that will result in a collision for playerOne
 	private String playerTwoCollisions; // directions of movement that will result in a collision for playerTwo
-	private double moveSpeed = 100; // hor. vel. of ship (px/s)
+	private double moveSpeed = 200; // hor. vel. of ship (px/s)
 	private int alienCount; // # of aliens left on screen
 	private int gravity = 150;
 	private double initialFuelLevelOne;
@@ -167,12 +167,12 @@ public class Game extends Canvas {
 		// reset and set varibles that change with each level
 		switch(level){
 			case 1:
-				initialFuelLevelOne = 100;
-				initialFuelLevelTwo = 100;
+				initialFuelLevelOne = 45;
+				initialFuelLevelTwo = 45;
 				break;
 			case 2:
-				initialFuelLevelOne = 300;
-				initialFuelLevelTwo = 300;
+				initialFuelLevelOne = 60;
+				initialFuelLevelTwo = 60;
 				break;
 			case 3:
 				break;
@@ -304,14 +304,14 @@ public class Game extends Canvas {
 			} // for
 
 			// draw fuel tank for p1
-			g.setColor(new Color(0, 0, 0));
+			g.setColor(Color.green);
 			(SpriteStore.get()).getSprite("sprites/P1JetPackBar.png").draw(g, 5, 0);
-			g.fillRect(18, 7, (int) ((((PlayerEntity) playerOne).getFuelLevel() / initialFuelLevelOne) * 100), 12);
+			g.fillRect(18, 7, 101 - (int) ((((PlayerEntity) playerOne).getFuelLevel() / initialFuelLevelOne) * 100), 12);
 
 			// draw fuel tank for p2
 			g.setColor(Color.pink);
 			(SpriteStore.get()).getSprite("sprites/P2JetPackBar.png").draw(g, 1155, 0);
-			g.fillRect(1168, 7, (int) ((((PlayerEntity) playerTwo).getFuelLevel() / initialFuelLevelTwo) * 100), 12);
+			g.fillRect(1168, 7, 101 - (int) ((((PlayerEntity) playerTwo).getFuelLevel() / initialFuelLevelTwo) * 100), 12);
 
 			// brute force collisions, compare every entity
 			// against every other entity. If any collisions
@@ -360,6 +360,7 @@ public class Game extends Canvas {
 			// intial movement logic for playerOne
 			playerOne.setHorizontalMovement(0);
 			if(playerOneCollisions.contains("bottom") && !(playerOneCollisions.contains("top"))){
+				((PlayerEntity) playerOne).setFuelLevel(initialFuelLevelOne);
 				playerOne.setVerticalMovement(0);
 			} else {
 				playerOne.setVerticalMovement(gravity); // gravity must be equal to jump speed
@@ -368,6 +369,7 @@ public class Game extends Canvas {
 			// initial movement logic for playerTwo
 			playerTwo.setHorizontalMovement(0);
 			if(playerTwoCollisions.contains("bottom") && !(playerTwoCollisions.contains("top"))){
+				((PlayerEntity) playerTwo).setFuelLevel(initialFuelLevelTwo);
 				playerTwo.setVerticalMovement(0);
 			} else {
 				playerTwo.setVerticalMovement(gravity); // gravity must be equal to jump speed
