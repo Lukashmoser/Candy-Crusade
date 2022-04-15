@@ -266,6 +266,50 @@ public class Game extends Canvas {
 		}
 	} // tryToJump
 
+	// checks if a individual shot generator is able to fire then if it is able to it generates a shot based on the generators parameters and shoots it
+	public void tryToFire(Entity generator){
+		int x = 0;
+		int y = 0;
+		char direction;
+		
+		if(System.currentTimeMillis() - ((ShotGeneratorEntity) generator).getTimeOfLastShot() >= ((ShotGeneratorEntity) generator).getShootingInterval()){
+			direction = ((ShotGeneratorEntity) generator).getDirectionOfShot();
+			
+			// determine the shots starting position
+			switch(direction){
+				case 'r':
+					x = generator.getX() + generator.getSprite().getWidth();
+					y = generator.getY() + (generator.getSprite().getHeight() / 2);
+					break;
+				case 'l':
+					x = generator.getX();
+					y = generator.getY() + (generator.getSprite().getHeight() / 2);
+					break;
+				case 'u':
+					x = generator.getX() + (generator.getSprite().getWidth() / 2);
+					y = generator.getY();
+					break;
+				case 'd':
+					x = generator.getX() + (generator.getSprite().getWidth() / 2);
+					y = generator.getY() + generator.getSprite().getHeight();
+					break;
+			}
+			
+			Entity tempShot = new DeathEntity(((ShotGeneratorEntity) generator).getShotSprite(), x, y, this);
+			
+			// set the shots movement
+			if(direction == 'l' || direction == 'r'){
+				tempShot.setHorizontalMovement(((ShotGeneratorEntity) generator).getShotMoveSpeed());
+			} else {
+				tempShot.setVerticalMovement(((ShotGeneratorEntity) generator).getShotMoveSpeed());
+			}
+
+			entities.add(tempShot);
+
+			((ShotGeneratorEntity) generator).setTimeOfLastShot(System.currentTimeMillis());
+		}
+	} // tryToFire
+
 	/*
 	 * gameLoop input: none output: none purpose: Main game loop. Runs throughout
 	 * game play. Responsible for the following activities: - calculates speed of
@@ -329,6 +373,13 @@ public class Game extends Canvas {
 				} // inner for
 			} // outer for
 
+			// check if there are any shot generators on screen if so have them attempt to shoot
+			for(int i = 0; i < entities.size(); i++){
+				if(entities.get(i) instanceof ShotGeneratorEntity){
+					tryToFire((Entity) entities.get(i));
+				}
+			}
+
 			// remove dead entities
 			entities.removeAll(removeEntities);
 			removeEntities.clear();
@@ -377,26 +428,24 @@ public class Game extends Canvas {
 
 			// respond to playerOne moving character left or right
 			if ((leftPressedOne) && (!rightPressedOne) && !(playerOneCollisions.contains("left"))) {
-				System.out.println(playerOneCollisions);
 				playerOne.setHorizontalMovement(-moveSpeed);
-				playerOne.changeSprite("sprites/leftPlayer.gif");
+				playerOne.setSprite("sprites/leftPlayer.gif");
 			} else if ((rightPressedOne) && (!leftPressedOne) && !(playerOneCollisions.contains("right"))) {
 				playerOne.setHorizontalMovement(moveSpeed);
-				playerOne.changeSprite("sprites/rightPlayer.gif");
+				playerOne.setSprite("sprites/rightPlayer.gif");
 			} else if ((!rightPressedOne) && (!leftPressedOne)) {
-				playerOne.changeSprite("sprites/blankPlayer.gif");
+				playerOne.setSprite("sprites/blankPlayer.gif");
 			}
 
 			// respond to playerTwo moving character left or right
 			if ((leftPressedTwo) && (!rightPressedTwo) && !(playerTwoCollisions.contains("left"))) {
-				System.out.println(playerTwoCollisions);
 				playerTwo.setHorizontalMovement(-moveSpeed);
-				playerTwo.changeSprite("sprites/leftPlayer.gif");
+				playerTwo.setSprite("sprites/leftPlayer.gif");
 			} else if ((rightPressedTwo) && (!leftPressedTwo) && !(playerTwoCollisions.contains("right"))) {
 				playerTwo.setHorizontalMovement(moveSpeed);
-				playerTwo.changeSprite("sprites/rightPlayer.gif");
+				playerTwo.setSprite("sprites/rightPlayer.gif");
 			} else if ((!rightPressedTwo) && (!leftPressedTwo)) {
-				playerTwo.changeSprite("sprites/blankPlayer.gif");
+				playerTwo.setSprite("sprites/blankPlayer.gif");
 			}
 
 			// if spacebar pressed, try to fire
@@ -418,11 +467,6 @@ public class Game extends Canvas {
 				// tryToBomb();
 			}
 
-			//check if they have completed the level
-			/*if(playerOne.getCompletition() && playerTwo.getCompletion()){
-				
-			}*/
-
 			// pause
 			try {
 				Thread.sleep(16);
@@ -438,7 +482,6 @@ public class Game extends Canvas {
 	 * data
 	 */
 	private void startGame() {
-		System.out.println("started game");
 		// clear out any existing entities and initalize a new set
 		entities.clear();
 
@@ -585,7 +628,8 @@ public class Game extends Canvas {
 				goalOne = new GoalEntity("sprites/blankPlayer.gif", 300, 80, playerOne);
 				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 800, 600, playerTwo);
 
-				entities.add(new DeathEntity("sprites/leftPlayer.gif", 100, 600));// death entity
+				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 120, 80, "sprites/tempBullet.png", 100, 1500, 'r'));
+				entities.add(new DeathEntity("sprites/leftPlayer.gif", 100, 600, this));// death entity
 
 				entities.add(new MovableBlockEntity("sprites/stone.png", 800, 640, this));
 				// tip : order in entities is order of drawing(if something needs to be infront put it later)
@@ -720,7 +764,7 @@ public class Game extends Canvas {
 				} // W
 				
 				for (int i = 640; i < 1160; i += 40){
-					entities.add(new DeathEntity("sprites/death.png", i, 440));
+					entities.add(new DeathEntity("sprites/death.png", i, 440, this));
 				} // W
 				
 				for (int i = 640; i < 720; i += 40){
@@ -728,7 +772,7 @@ public class Game extends Canvas {
 				} // W
 				
 				for (int i = 40; i < 400; i += 40){
-					entities.add(new DeathEntity("sprites/death.png", i, 680));
+					entities.add(new DeathEntity("sprites/death.png", i, 680, this));
 				} // W
 				
 				for (int i = 640; i < 720; i += 40){

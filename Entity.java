@@ -60,6 +60,10 @@ public abstract class Entity {
 		dy = newDY;
 	} // setVerticalMovement
 
+	public void setSprite(String r){
+		sprite = (SpriteStore.get()).getSprite(r);
+	}
+
 	public double getHorizontalMovement() {
 		return dx;
 	} // getHorizontalMovement
@@ -76,6 +80,10 @@ public abstract class Entity {
 	public int getY() {
 		return (int) y;
 	} // getY
+
+	public Sprite getSprite(){
+		return sprite;
+	}
 
 	/*
 	 * Draw this entity to the graphics object provided at (x,y)
@@ -157,9 +165,5 @@ public abstract class Entity {
 	 * must be implemented by any class that extends this class
 	 */
 	public abstract void collidedWith(Entity other);
-
-	public void changeSprite(String r){
-		sprite = (SpriteStore.get()).getSprite(r);
-	}
 
 } // Entity class
