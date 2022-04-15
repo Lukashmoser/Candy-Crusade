@@ -1,13 +1,16 @@
 public class DeathEntity extends Entity {
 
+    Game game;
     
-    public DeathEntity(String r, int newX, int newY) {
+    public DeathEntity(String r, int newX, int newY, Game g) {
         super(r, newX, newY);
-        //TODO Auto-generated constructor stub
+        game = g;
     }
 
     public void collidedWith(Entity other) {
-        // TODO Auto-generated method stub
+        if(other instanceof TileEntity || other instanceof MovableBlockEntity || other instanceof DeathEntity){
+            game.removeEntity(this);
+        }
         
     }
     
