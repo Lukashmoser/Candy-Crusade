@@ -34,12 +34,24 @@ public class PlayerEntity extends Entity {
 	public void move() {
 		// stop at left side of screen
 		if ((dx < 0) && (x < 0)) {
-			return;
+			this.setHorizontalMovement(0);
 		} // if
-			// stop at right side of screen
+		
+		// stop at right side of screen
 		if ((dx > 0) && (x > 1240)) {
-			return;
+			this.setHorizontalMovement(0);
 		} // if
+
+		// stop at top of screen
+		if ((dy < 0) && (y < 0)) {
+			this.setVerticalMovement(0);
+		} // if
+
+		// stop at bottom of screen
+		if ((dy > 0) && (y > 680)){
+
+		}
+
 
 		super.move(); // calls the move method in Entity
 	} // move
