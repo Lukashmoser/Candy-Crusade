@@ -429,23 +429,47 @@ public class Game extends Canvas {
 			// respond to playerOne moving character left or right
 			if ((leftPressedOne) && (!rightPressedOne) && !(playerOneCollisions.contains("left"))) {
 				playerOne.setHorizontalMovement(-moveSpeed);
-				playerOne.setSprite("sprites/leftPlayer.gif");
+				if(upPressedOne){
+					playerOne.setSprite("sprites/leftPlayer.gif");
+				} else {
+					playerOne.setSprite("sprites/leftPlayer.gif");
+				}
 			} else if ((rightPressedOne) && (!leftPressedOne) && !(playerOneCollisions.contains("right"))) {
 				playerOne.setHorizontalMovement(moveSpeed);
-				playerOne.setSprite("sprites/rightPlayer.gif");
+				if(upPressedOne){
+					playerOne.setSprite("sprites/rightPlayer.gif");
+				} else {
+					playerOne.setSprite("sprites/rightPlayer.gif");
+				}
 			} else if ((!rightPressedOne) && (!leftPressedOne)) {
-				playerOne.setSprite("sprites/blankPlayer.gif");
+				if(upPressedOne){
+					playerOne.setSprite("sprites/blankPlayer.gif");
+				} else {
+					playerOne.setSprite("sprites/blankPlayer.gif");
+				}
 			}
 
 			// respond to playerTwo moving character left or right
 			if ((leftPressedTwo) && (!rightPressedTwo) && !(playerTwoCollisions.contains("left"))) {
 				playerTwo.setHorizontalMovement(-moveSpeed);
-				playerTwo.setSprite("sprites/leftPlayer.gif");
+				if(upPressedTwo){
+					playerTwo.setSprite("sprites/leftPlayer.gif");
+				} else {
+					playerTwo.setSprite("sprites/leftPlayer.gif");
+				}
 			} else if ((rightPressedTwo) && (!leftPressedTwo) && !(playerTwoCollisions.contains("right"))) {
 				playerTwo.setHorizontalMovement(moveSpeed);
-				playerTwo.setSprite("sprites/rightPlayer.gif");
+				if(upPressedTwo){
+					playerTwo.setSprite("sprites/rightPlayer.gif");
+				} else {
+					playerTwo.setSprite("sprites/rightPlayer.gif");
+				}
 			} else if ((!rightPressedTwo) && (!leftPressedTwo)) {
-				playerTwo.setSprite("sprites/blankPlayer.gif");
+				if(upPressedTwo){
+					playerTwo.setSprite("sprites/blankPlayer.gif");
+				} else {
+					playerTwo.setSprite("sprites/blankPlayer.gif");
+				}
 			}
 
 			// if spacebar pressed, try to fire
@@ -453,8 +477,7 @@ public class Game extends Canvas {
 				// tryToFire();
 			} // if
 
-			// if up arrow pressed set vetical movement to 50
-
+			// if up arrow pressed try to jump
 			if (upPressedOne) {
 				tryToJump(playerOne, playerOneCollisions);
 			}
