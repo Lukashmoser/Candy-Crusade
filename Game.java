@@ -172,10 +172,12 @@ public class Game extends Canvas {
 				initialFuelLevelTwo = 45;
 				break;
 			case 2:
-				initialFuelLevelOne = 60;
-				initialFuelLevelTwo = 60;
+				initialFuelLevelOne = 45;
+				initialFuelLevelTwo = 45;
 				break;
 			case 3:
+				initialFuelLevelOne = 45;
+				initialFuelLevelTwo = 45;
 				break;
 			case 4:
 				break;
@@ -853,6 +855,112 @@ public class Game extends Canvas {
 				entities.add(playerTwo);
 				break;
 			case 3:
+				// create players and and put in correct location
+				playerOne = new PlayerEntity(this, "sprites/blankPlayer.gif", 20, 560, initialFuelLevelOne);
+				playerTwo = new PlayerEntity(this, "sprites/blankPLayer.gif", 1205, 610, initialFuelLevelTwo);
+
+				// create goal location for each player
+				goalOne = new GoalEntity("sprites/blankPlayer.gif", 20, 40, playerOne);
+				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 80, 40, playerTwo);
+
+				//platform 1
+				entities.add(new TileEntity(this, "sprites/stone.png", 0, 680, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 40, 680, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 80, 680, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 0, 640, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 40, 640, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 80, 640, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 80, 600, "platform"));
+
+				// platform 2
+				entities.add(new TileEntity(this, "sprites/stone.png", 440, 680, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 480, 680, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 440, 640, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 480, 640, "platform"));
+
+				// platform 3
+				entities.add(new TileEntity(this, "sprites/stone.png", 840, 680, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 880, 680, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 840, 640, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 880, 640, "platform"));
+
+				// death floor
+				entities.add(new DeathEntity("sprites/death.png", 120, 680, this));
+				entities.add(new DeathEntity("sprites/death.png", 160, 680, this));
+				entities.add(new DeathEntity("sprites/death.png", 200, 680, this));
+				entities.add(new DeathEntity("sprites/death.png", 240, 680, this));
+				entities.add(new DeathEntity("sprites/death.png", 280, 680, this));
+				entities.add(new DeathEntity("sprites/death.png", 320, 680, this));
+				entities.add(new DeathEntity("sprites/death.png", 360, 680, this));
+				entities.add(new DeathEntity("sprites/death.png", 400, 680, this));
+
+				entities.add(new DeathEntity("sprites/death.png", 520, 680, this));
+				entities.add(new DeathEntity("sprites/death.png", 560, 680, this));
+				entities.add(new DeathEntity("sprites/death.png", 600, 680, this));
+				entities.add(new DeathEntity("sprites/death.png", 640, 680, this));
+				entities.add(new DeathEntity("sprites/death.png", 680, 680, this));
+				entities.add(new DeathEntity("sprites/death.png", 720, 680, this));
+				entities.add(new DeathEntity("sprites/death.png", 760, 680, this));
+				entities.add(new DeathEntity("sprites/death.png", 800, 680, this));
+
+				entities.add(new DeathEntity("sprites/death.png", 920, 680, this));
+				entities.add(new DeathEntity("sprites/death.png", 960, 680, this));
+				entities.add(new DeathEntity("sprites/death.png", 1000, 680, this));
+				entities.add(new DeathEntity("sprites/death.png", 1040, 680, this));
+				entities.add(new DeathEntity("sprites/death.png", 1080, 680, this));
+				entities.add(new DeathEntity("sprites/death.png", 1120, 680, this));
+				
+				// box that holds p2
+				entities.add(new TileEntity(this, "sprites/stone.png", 1160, 680, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 1200, 680, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 1240, 680, "platform"));
+
+				entities.add(new TileEntity(this, "sprites/stone.png", 1160, 640, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 1160, 600, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 1160, 560, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 1120, 560, "platform"));
+
+				//door and button
+				door = new DeathEntity("sprites/door.png", 1200, 560, this);
+				entities.add(door);
+				entities.add(new ButtonEntity(this, "sprites/button.png", 1120, 520, door));
+
+				// shooter
+				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 1120, 600, "sprites/tempBullet.png", -120, 3000, 'l'));
+
+				// platform ladder
+				entities.add(new TileEntity(this, "sprites/stone.png", 1160, 440, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 1200, 440, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 1240, 440, "platform"));
+
+				entities.add(new TileEntity(this, "sprites/stone.png", 1160, 320, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 1200, 320, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 1240, 320, "platform"));
+
+				entities.add(new TileEntity(this, "sprites/stone.png", 1160, 200, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 1200, 200, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 1240, 200, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 1240, 160, "platform"));
+
+				// second long jumps
+				entities.add(new TileEntity(this, "sprites/stone.png", 800, 200, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 760, 200, "platform"));
+
+				entities.add(new TileEntity(this, "sprites/stone.png", 440, 200, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 400, 200, "platform"));
+
+				// end platform and shooter
+				entities.add(new TileEntity(this, "sprites/stone.png", 0, 120, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 40, 120, "platform"));
+				entities.add(new TileEntity(this, "sprites/stone.png", 80, 120, "platform"));
+
+				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 80, 160, "sprites/tempBullet.png", 120, 3000, 'r'));
+
+				//add players and goal
+				entities.add(goalOne);
+				entities.add(goalTwo);
+				entities.add(playerOne);
+				entities.add(playerTwo);
 				break;
 			case 4:
 				break;
