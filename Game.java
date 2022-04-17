@@ -53,6 +53,7 @@ public class Game extends Canvas {
 	// dynamic entities
 	private Entity goalOne;
 	private Entity goalTwo;
+	private Entity door;
 
 	// tile entities
 	private Entity tileStone1;
@@ -362,6 +363,12 @@ public class Game extends Canvas {
 			// are detected notify both entities that it has
 			// occurred
 			for (int i = 0; i < entities.size(); i++) {
+				// auto set button pressed to false
+				if(entities.get(i) instanceof ButtonEntity){
+					((ButtonEntity) entities.get(i)).setPressed(false);
+					((Entity) entities.get(i)).setSprite("sprites/button.png");
+				}
+
 				for (int j = i + 1; j < entities.size(); j++) {
 					Entity me = (Entity) entities.get(i);
 					Entity him = (Entity) entities.get(j);
@@ -371,13 +378,26 @@ public class Game extends Canvas {
 						him.collidedWith(me);
 					} // if
 				} // inner for
-			} // outer for
 
-			// check if there are any shot generators on screen if so have them attempt to shoot
-			for(int i = 0; i < entities.size(); i++){
+				// check if there are any shot generators on screen if so have them attempt to shoot
 				if(entities.get(i) instanceof ShotGeneratorEntity){
 					tryToFire((Entity) entities.get(i));
 				}
+
+				// checks if there are any buttons on the screen if they are not pressed add their corresponding door
+				if(entities.get(i) instanceof ButtonEntity){
+					if(((ButtonEntity) entities.get(i)).getPressed()){
+						((ButtonEntity) entities.get(i)).getTarget().setX(1280);
+						((ButtonEntity) entities.get(i)).getTarget().setY(720);
+					} else {
+						((ButtonEntity) entities.get(i)).getTarget().setX(((ButtonEntity) entities.get(i)).getOriginX());
+						((ButtonEntity) entities.get(i)).getTarget().setY(((ButtonEntity) entities.get(i)).getOriginY());
+					}
+				}
+			} // outer for
+
+			
+			for(int i = 0; i < entities.size(); i++){
 			}
 
 			// remove dead entities
@@ -655,6 +675,13 @@ public class Game extends Canvas {
 				entities.add(new DeathEntity("sprites/leftPlayer.gif", 100, 600, this));// death entity
 
 				entities.add(new MovableBlockEntity("sprites/stone.png", 800, 640, this));
+
+				door = new DeathEntity("sprites/door.png", 1160, 160, this);
+
+				entities.add(new ButtonEntity(this, "sprites/button.png", 700, 480, door));
+
+				entities.add(door);
+
 				// tip : order in entities is order of drawing(if something needs to be infront put it later)
 				for (int i = 0; i < 1280; i += 40){
 					tileStone1 = new TileEntity(this, "sprites/stone.png", i, 0, "platform");
