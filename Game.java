@@ -54,6 +54,8 @@ public class Game extends Canvas {
 	private Entity goalOne;
 	private Entity goalTwo;
 	private Entity door;
+	private Entity buttonOne;
+	private Entity buttonTwo;
 
 	// tile entities
 	private Entity tileStone1;
@@ -388,7 +390,7 @@ public class Game extends Canvas {
 
 				// checks if there are any buttons on the screen if they are not pressed add their corresponding door
 				if(entities.get(i) instanceof ButtonEntity){
-					if(((ButtonEntity) entities.get(i)).getPressed()){
+					if(((ButtonEntity) entities.get(i)).getPressed() || ((ButtonEntity) ((ButtonEntity) entities.get(i)).getSecondButton()).getPressed()){
 						((ButtonEntity) entities.get(i)).getTarget().setX(1280);
 						((ButtonEntity) entities.get(i)).getTarget().setY(720);
 					} else {
@@ -397,10 +399,6 @@ public class Game extends Canvas {
 					}
 				}
 			} // outer for
-
-			
-			for(int i = 0; i < entities.size(); i++){
-			}
 
 			// remove dead entities
 			entities.removeAll(removeEntities);
@@ -680,8 +678,12 @@ public class Game extends Canvas {
 
 				door = new DeathEntity("sprites/door.png", 1160, 160, this);
 
-				entities.add(new ButtonEntity(this, "sprites/button.png", 700, 480, door));
+				buttonOne = new ButtonEntity(this, "sprites/button.png", 700, 480, door);
+				buttonTwo = new ButtonEntity(this, "sprites/button.png", 600, 280, door, buttonOne);
+				((ButtonEntity) buttonOne).setSecondButton(buttonTwo);
 
+				entities.add(buttonOne);
+				entities.add(buttonTwo);
 				entities.add(door);
 
 				// tip : order in entities is order of drawing(if something needs to be infront put it later)
@@ -710,7 +712,7 @@ public class Game extends Canvas {
 				tileStone8 = new TileEntity(this, "sprites/stone.png", 1240, 200, "wall");
 				entities.add(tileStone8);
 
-				tileStone9 = new TileEntity(this, "sprites/stone.png", 0, 240, "wall");
+					tileStone9 = new TileEntity(this, "sprites/stone.png", 0, 240, "wall");
 				entities.add(tileStone9);
 				tileStone10 = new TileEntity(this, "sprites/stone.png", 1240, 240, "wall");
 				entities.add(tileStone10);

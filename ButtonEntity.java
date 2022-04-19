@@ -3,6 +3,7 @@ public class ButtonEntity extends Entity {
     Entity target;
     Game game;
     boolean pressed = false;
+    Entity secondButton;
     int originX;
     int originY;
 
@@ -12,6 +13,15 @@ public class ButtonEntity extends Entity {
         game = g;
         originX = newTarget.getX();
         originY = newTarget.getY();
+    }
+
+    public ButtonEntity(Game g, String r, int newX, int newY, Entity newTarget, Entity newSecondButton) {
+        super(r, newX, newY);
+        target = newTarget;
+        game = g;
+        originX = newTarget.getX();
+        originY = newTarget.getY();
+        secondButton = newSecondButton;
     }
 
     public boolean getPressed(){
@@ -30,8 +40,16 @@ public class ButtonEntity extends Entity {
         return originY;
     }
 
+    public Entity getSecondButton(){
+        return secondButton;
+    }
+
     public void setPressed(boolean state){
         pressed = state;
+    }
+
+    public void setSecondButton(Entity newSecondButton){
+        secondButton = newSecondButton;
     }
 
     public void collidedWith(Entity other) {
