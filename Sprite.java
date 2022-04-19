@@ -28,6 +28,11 @@ public class Sprite {
 		return image.getHeight(null);
 	} // getHeight
 
+	// return image of sprite
+	public Image getImage(){
+		return image;
+	}
+
 	// draw the sprite in the graphics object provided at location (x,y)
 	public void draw(Graphics g, int x, int y) {
 		g.drawImage(image, x, y, null);
