@@ -36,6 +36,7 @@ public class Game extends Canvas {
 	private boolean playerOneCleared = false;
 	private boolean playerTwoCleared = false;
 	private int currentLevel = 1;
+	private String background = ""; 
 	private ArrayList entities = new ArrayList(); // list of entities
 													// in game
 	private ArrayList removeEntities = new ArrayList(); // list of entities
@@ -54,8 +55,6 @@ public class Game extends Canvas {
 	private Entity goalOne;
 	private Entity goalTwo;
 	private Entity door;
-	private Entity buttonOne;
-	private Entity buttonTwo;
 
 	// tile entities
 	private Entity tileStone1;
@@ -90,7 +89,7 @@ public class Game extends Canvas {
 	private Entity tileStone31;
 	private Entity tileStone32;
 	private Entity tileStone33;
-
+	
 	private String message = ""; // message to display while waiting
 									// for a key press
 
@@ -103,7 +102,7 @@ public class Game extends Canvas {
 	 */
 	public Game() {
 		// create a frame to contain game
-		JFrame container = new JFrame("App Adventure");
+		JFrame container = new JFrame("Super Candroid Siblings");
 
 		// get hold the content of the frame
 		JPanel panel = (JPanel) container.getContentPane();
@@ -172,6 +171,7 @@ public class Game extends Canvas {
 			case 1:
 				initialFuelLevelOne = 45;
 				initialFuelLevelTwo = 45;
+				background = "sprites/BackgroundTwo.png";
 				break;
 			case 2:
 				initialFuelLevelOne = 45;
@@ -333,11 +333,11 @@ public class Game extends Canvas {
 			lastLoopTime = System.currentTimeMillis();
 
 			// get graphics context for the accelerated surface and make it black
+			
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
-			g.setColor(new Color(0, 0, 0));
-			g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+			
+			g.drawImage((SpriteStore.get()).getSprite(background).getImage(), 0, 0, null);
 
-			// move each entity
 			if (!waitingForKeyPress) {
 				for (int i = 0; i < entities.size(); i++) {
 					Entity entity = (Entity) entities.get(i);
@@ -354,13 +354,13 @@ public class Game extends Canvas {
 
 			// draw fuel tank for p1
 			g.setColor(Color.green);
-			(SpriteStore.get()).getSprite("sprites/P1JetPackBar.png").draw(g, 5, 0);
-			g.fillRect(18, 7, 101 - (int) ((((PlayerEntity) playerOne).getFuelLevel() / initialFuelLevelOne) * 100), 12);
+			(SpriteStore.get()).getSprite("sprites/P1JetPackBar.png").draw(g, 5, 10);
+			g.fillRect(53, 20, (int) ((101 - (int) ((((PlayerEntity) playerOne).getFuelLevel() / initialFuelLevelOne) * 100)) * 1.42), 20);
 
 			// draw fuel tank for p2
 			g.setColor(Color.pink);
-			(SpriteStore.get()).getSprite("sprites/P2JetPackBar.png").draw(g, 1155, 0);
-			g.fillRect(1168, 7, 101 - (int) ((((PlayerEntity) playerTwo).getFuelLevel() / initialFuelLevelTwo) * 100), 12);
+			(SpriteStore.get()).getSprite("sprites/P2JetPackBar.png").draw(g, 1075, 10);
+			g.fillRect(1085, 20, (int) ((101 - (int) ((((PlayerEntity) playerTwo).getFuelLevel() / initialFuelLevelTwo) * 100)) * 1.42), 20);
 
 			// brute force collisions, compare every entity
 			// against every other entity. If any collisions
@@ -390,15 +390,30 @@ public class Game extends Canvas {
 
 				// checks if there are any buttons on the screen if they are not pressed add their corresponding door
 				if(entities.get(i) instanceof ButtonEntity){
-					if(((ButtonEntity) entities.get(i)).getPressed() || ((ButtonEntity) ((ButtonEntity) entities.get(i)).getSecondButton()).getPressed()){
-						((ButtonEntity) entities.get(i)).getTarget().setX(1280);
-						((ButtonEntity) entities.get(i)).getTarget().setY(720);
+					if(((ButtonEntity) entities.get(i)).getSecondButton() == null){
+						if(((ButtonEntity) entities.get(i)).getPressed()){
+							((ButtonEntity) entities.get(i)).getTarget().setX(1280);
+							((ButtonEntity) entities.get(i)).getTarget().setY(720);
+						} else {
+							((ButtonEntity) entities.get(i)).getTarget().setX(((ButtonEntity) entities.get(i)).getOriginX());
+							((ButtonEntity) entities.get(i)).getTarget().setY(((ButtonEntity) entities.get(i)).getOriginY());
+						}
 					} else {
-						((ButtonEntity) entities.get(i)).getTarget().setX(((ButtonEntity) entities.get(i)).getOriginX());
-						((ButtonEntity) entities.get(i)).getTarget().setY(((ButtonEntity) entities.get(i)).getOriginY());
+						if(((ButtonEntity) entities.get(i)).getPressed() || ((ButtonEntity) ((ButtonEntity) entities.get(i)).getSecondButton()).getPressed()){
+							((ButtonEntity) entities.get(i)).getTarget().setX(1280);
+							((ButtonEntity) entities.get(i)).getTarget().setY(720);
+						} else {
+							((ButtonEntity) entities.get(i)).getTarget().setX(((ButtonEntity) entities.get(i)).getOriginX());
+							((ButtonEntity) entities.get(i)).getTarget().setY(((ButtonEntity) entities.get(i)).getOriginY());
+						}
 					}
 				}
+				
 			} // outer for
+
+			
+			for(int i = 0; i < entities.size(); i++){
+			}
 
 			// remove dead entities
 			entities.removeAll(removeEntities);
@@ -422,6 +437,7 @@ public class Game extends Canvas {
 
 			// clear graphics and flip buffer
 			g.dispose();
+			
 			strategy.show();
 
 			// store potential collsions for player character
@@ -450,22 +466,22 @@ public class Game extends Canvas {
 			if ((leftPressedOne) && (!rightPressedOne) && !(playerOneCollisions.contains("left"))) {
 				playerOne.setHorizontalMovement(-moveSpeed);
 				if(upPressedOne){
-					playerOne.setSprite("sprites/leftPlayer.gif");
+					playerOne.setSprite("sprites/PlayerOneJumpLeft.png");
 				} else {
-					playerOne.setSprite("sprites/leftPlayer.gif");
+					playerOne.setSprite("sprites/PlayerOneLeft.png");
 				}
 			} else if ((rightPressedOne) && (!leftPressedOne) && !(playerOneCollisions.contains("right"))) {
 				playerOne.setHorizontalMovement(moveSpeed);
 				if(upPressedOne){
-					playerOne.setSprite("sprites/rightPlayer.gif");
+					playerOne.setSprite("sprites/PlayerOneJumpRight.png");
 				} else {
-					playerOne.setSprite("sprites/rightPlayer.gif");
+					playerOne.setSprite("sprites/PlayerOneRight.png");
 				}
 			} else if ((!rightPressedOne) && (!leftPressedOne)) {
 				if(upPressedOne){
-					playerOne.setSprite("sprites/blankPlayer.gif");
+					playerOne.setSprite("sprites/PlayerOneJumpForward.png");
 				} else {
-					playerOne.setSprite("sprites/blankPlayer.gif");
+					playerOne.setSprite("sprites/PlayerOneForward.png");
 				}
 			}
 
@@ -473,22 +489,22 @@ public class Game extends Canvas {
 			if ((leftPressedTwo) && (!rightPressedTwo) && !(playerTwoCollisions.contains("left"))) {
 				playerTwo.setHorizontalMovement(-moveSpeed);
 				if(upPressedTwo){
-					playerTwo.setSprite("sprites/leftPlayer.gif");
+					playerTwo.setSprite("sprites/PlayerTwoJumpLeft.png");
 				} else {
-					playerTwo.setSprite("sprites/leftPlayer.gif");
+					playerTwo.setSprite("sprites/PlayerTwoLeft.png");
 				}
 			} else if ((rightPressedTwo) && (!leftPressedTwo) && !(playerTwoCollisions.contains("right"))) {
 				playerTwo.setHorizontalMovement(moveSpeed);
 				if(upPressedTwo){
-					playerTwo.setSprite("sprites/rightPlayer.gif");
+					playerTwo.setSprite("sprites/PlayerTwoJumpRight.png");
 				} else {
-					playerTwo.setSprite("sprites/rightPlayer.gif");
+					playerTwo.setSprite("sprites/PlayerTwoRight.png");
 				}
 			} else if ((!rightPressedTwo) && (!leftPressedTwo)) {
 				if(upPressedTwo){
-					playerTwo.setSprite("sprites/blankPlayer.gif");
+					playerTwo.setSprite("sprites/PlayerTwoJumpForward.png");
 				} else {
-					playerTwo.setSprite("sprites/blankPlayer.gif");
+					playerTwo.setSprite("sprites/PlayerTwoForward.png");
 				}
 			}
 
@@ -674,109 +690,101 @@ public class Game extends Canvas {
 				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 120, 80, "sprites/tempBullet.png", 100, 1500, 'r'));
 				entities.add(new DeathEntity("sprites/leftPlayer.gif", 100, 600, this));// death entity
 
-				entities.add(new MovableBlockEntity("sprites/stone.png", 800, 640, this));
+				entities.add(new MovableBlockEntity("sprites/chocolate.png", 800, 640, this));
 
-				door = new DeathEntity("sprites/door.png", 1160, 160, this);
-
-				buttonOne = new ButtonEntity(this, "sprites/button.png", 700, 480, door);
-				buttonTwo = new ButtonEntity(this, "sprites/button.png", 600, 280, door, buttonOne);
-				((ButtonEntity) buttonOne).setSecondButton(buttonTwo);
-
-				entities.add(buttonOne);
-				entities.add(buttonTwo);
-				entities.add(door);
+				
 
 				// tip : order in entities is order of drawing(if something needs to be infront put it later)
 				for (int i = 0; i < 1280; i += 40){
-					tileStone1 = new TileEntity(this, "sprites/stone.png", i, 0, "platform");
+					tileStone1 = new TileEntity(this, "sprites/chocolate.png", i, 0, "platform");
 					entities.add(tileStone1);
 				} // W
 				
-				tileStone2 = new TileEntity(this, "sprites/stone.png", 1240, 40, "wall");
+				tileStone2 = new TileEntity(this, "sprites/chocolate.png", 1240, 40, "wall");
 				entities.add(tileStone2);
 				
-				tileStone3 = new TileEntity(this, "sprites/stone.png", 1240, 80, "wall");
+				tileStone3 = new TileEntity(this, "sprites/chocolate.png", 1240, 80, "wall");
 				entities.add(tileStone3);
 
-				entities.add(new TileEntity(this, "sprites/stone.png", 1240, 120, "wall"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1240, 120, "wall"));
 				
 				for (int i = 0; i < 1040; i += 40){
-					tileStone5 = new TileEntity(this, "sprites/stone.png", i, 160, "platform");
+					tileStone5 = new TileEntity(this, "sprites/chocolate.png", i, 160, "platform");
 					entities.add(tileStone5);
 				} // W
-				tileStone6 = new TileEntity(this, "sprites/stone.png", 1240, 160, "wall");
+				tileStone6 = new TileEntity(this, "sprites/chocolate.png", 1240, 160, "wall");
 				entities.add(tileStone6);
 
-				tileStone7 = new TileEntity(this, "sprites/stone.png", 0, 200, "wall");
+				tileStone7 = new TileEntity(this, "sprites/chocolate.png", 0, 200, "wall");
 				entities.add(tileStone7);
-				tileStone8 = new TileEntity(this, "sprites/stone.png", 1240, 200, "wall");
+				tileStone8 = new TileEntity(this, "sprites/chocolate.png", 1240, 200, "wall");
 				entities.add(tileStone8);
 
-					tileStone9 = new TileEntity(this, "sprites/stone.png", 0, 240, "wall");
+				tileStone9 = new TileEntity(this, "sprites/chocolate.png", 0, 240, "wall");
 				entities.add(tileStone9);
-				tileStone10 = new TileEntity(this, "sprites/stone.png", 1240, 240, "wall");
+				tileStone10 = new TileEntity(this, "sprites/chocolate.png", 1240, 240, "wall");
 				entities.add(tileStone10);
 				
-				tileStone11 = new TileEntity(this, "sprites/stone.png", 0, 280, "wall");
+				tileStone11 = new TileEntity(this, "sprites/chocolate.png", 0, 280, "wall");
 				entities.add(tileStone11);
-				tileStone12 = new TileEntity(this, "sprites/stone.png", 1240, 280, "wall");
+				tileStone12 = new TileEntity(this, "sprites/chocolate.png", 1240, 280, "wall");
 				entities.add(tileStone12);
 
-				tileStone13 = new TileEntity(this, "sprites/stone.png", 0, 320, "wall");
+				tileStone13 = new TileEntity(this, "sprites/chocolate.png", 0, 320, "wall");
 				entities.add(tileStone13);
 				for (int i = 200; i < 1280; i += 40){
-					tileStone14 = new TileEntity(this, "sprites/stone.png", i, 320, "platform");
+					tileStone14 = new TileEntity(this, "sprites/chocolate.png", i, 320, "platform");
 					entities.add(tileStone14);
 				} // W
 
-				tileStone15 = new TileEntity(this, "sprites/stone.png", 0, 360, "wall");
+				tileStone15 = new TileEntity(this, "sprites/chocolate.png", 0, 360, "wall");
 				entities.add(tileStone15);
-				tileStone16 = new TileEntity(this, "sprites/stone.png", 1240, 360, "wall");
+				tileStone16 = new TileEntity(this, "sprites/chocolate.png", 1240, 360, "wall");
 				entities.add(tileStone16);
 
-				tileStone17 = new TileEntity(this, "sprites/stone.png", 0, 400, "wall");
+				tileStone17 = new TileEntity(this, "sprites/chocolate.png", 0, 400, "wall");
 				entities.add(tileStone17);
-				tileStone18 = new TileEntity(this, "sprites/stone.png", 1240, 400, "wall");
+				tileStone18 = new TileEntity(this, "sprites/chocolate.png", 1240, 400, "wall");
 				entities.add(tileStone18);
 				
-				tileStone19 = new TileEntity(this, "sprites/stone.png", 0, 440, "wall");
+				tileStone19 = new TileEntity(this, "sprites/chocolate.png", 0, 440, "wall");
 				entities.add(tileStone19);
-				tileStone20 = new TileEntity(this, "sprites/stone.png", 1240, 440, "wall");
+				tileStone20 = new TileEntity(this, "sprites/chocolate.png", 1240, 440, "wall");
 				entities.add(tileStone20);
 
 				for (int i = 0; i < 560; i += 40){
-					tileStone21 = new TileEntity(this, "sprites/stone.png", i, 480, "platform");
+					tileStone21 = new TileEntity(this, "sprites/chocolate.png", i, 480, "platform");
 					entities.add(tileStone21);
 				} // W
-				tileStone22 = new TileEntity(this, "sprites/stone.png", 1240, 480, "wall");
+				tileStone22 = new TileEntity(this, "sprites/chocolate.png", 1240, 480, "wall");
 				entities.add(tileStone22);
 
-				tileStone24 = new TileEntity(this, "sprites/stone.png", 0, 520, "wall");
+				tileStone24 = new TileEntity(this, "sprites/chocolate.png", 0, 520, "wall");
 				entities.add(tileStone24);
 				for (int i = 560; i < 1040; i += 40){
-					tileStone25 = new TileEntity(this, "sprites/stone.png", i, 520, "platform");
+					tileStone25 = new TileEntity(this, "sprites/chocolate.png", i, 520, "platform");
 					entities.add(tileStone25);
 				} // W
-				tileStone26 = new TileEntity(this, "sprites/stone.png", 1240, 520, "wall");
+				tileStone26 = new TileEntity(this, "sprites/chocolate.png", 1240, 520, "wall");
 				entities.add(tileStone26);
 
-				tileStone27 = new TileEntity(this, "sprites/stone.png", 0, 560, "wall");
+				tileStone27 = new TileEntity(this, "sprites/chocolate.png", 0, 560, "wall");
 				entities.add(tileStone27);
-				tileStone28 = new TileEntity(this, "sprites/stone.png", 1240, 560, "wall");
+				tileStone28 = new TileEntity(this, "sprites/chocolate.png", 1240, 560, "wall");
 				entities.add(tileStone28);
 
-				tileStone29 = new TileEntity(this, "sprites/stone.png", 0, 600, "wall");
+				tileStone29 = new TileEntity(this, "sprites/chocolate.png", 0, 600, "wall");
 				entities.add(tileStone29);
-				tileStone30 = new TileEntity(this, "sprites/stone.png", 1240, 600, "wall");
+				tileStone30 = new TileEntity(this, "sprites/chocolate.png", 1240, 600, "wall");
 				entities.add(tileStone30);
 				
-				tileStone31 = new TileEntity(this, "sprites/stone.png", 0, 640, "wall");
+				tileStone31 = new TileEntity(this, "sprites/chocolate.png", 0, 640, "wall");
 				entities.add(tileStone31);
-				tileStone32 = new TileEntity(this, "sprites/stone.png", 1240, 640, "wall");
+				tileStone32 = new TileEntity(this, "sprites/chocolate.png", 1240, 640, "wall");
 				entities.add(tileStone32);
 
 				for (int i = 0; i < 1280; i += 40){
-					tileStone33 = new TileEntity(this, "sprites/stone.png", i, 680, "platform");
+					tileStone33 = new TileEntity(this, "sprites/chocolate.png", i, 680, "platform");
 					entities.add(tileStone33);
 				} // W
 
@@ -794,27 +802,27 @@ public class Game extends Canvas {
 				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 80, 280, playerTwo);
 				
 				for (int i = 0; i < 640; i += 40){
-					entities.add(new TileEntity(this, "sprites/stone.png", i, 160, "platform"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 160, "platform"));
 				} // W
 				for (int i = 200; i < 520; i += 40){
-					entities.add(new TileEntity(this, "sprites/stone.png", 600, i, "wall"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", 600, i, "wall"));
 				} // W
 				for (int i = 640; i < 1160; i += 40){
-				entities.add(new TileEntity(this, "sprites/stone.png", i, 480, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", i, 480, "platform"));
 				} // W
 				for (int i = 320; i < 520; i += 40){
-					entities.add(new TileEntity(this, "sprites/stone.png", 1160, i, "wall"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, i, "wall"));
 				} // W
 				
 				for (int i = 640; i < 760; i += 40){
-					entities.add(new TileEntity(this, "sprites/stone.png", i, 320, "platform"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 320, "platform"));
 				} // W
 				
-				entities.add(new TileEntity(this, "sprites/stone.png", 880, 320, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 920, 320, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 880, 320, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 920, 320, "platform"));
 				
 				for (int i = 1080; i < 1160; i += 40){
-					entities.add(new TileEntity(this, "sprites/stone.png", i, 320, "platform"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 320, "platform"));
 				} // W
 				
 				for (int i = 640; i < 1160; i += 40){
@@ -822,7 +830,7 @@ public class Game extends Canvas {
 				} // W
 				
 				for (int i = 640; i < 720; i += 40){
-					entities.add(new TileEntity(this, "sprites/stone.png", 0, i, "wall"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", 0, i, "wall"));
 				} // W
 				
 				for (int i = 40; i < 400; i += 40){
@@ -830,25 +838,33 @@ public class Game extends Canvas {
 				} // W
 				
 				for (int i = 640; i < 720; i += 40){
-					entities.add(new TileEntity(this, "sprites/stone.png", 400, i, "wall"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", 400, i, "wall"));
 				} // W
 				
 				for (int i = 440; i < 1280; i += 40){
-					entities.add(new TileEntity(this, "sprites/stone.png", i, 680, "platform"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 680, "platform"));
 				} // W
 				
 				for (int i = 0; i < 120; i += 40){
-					entities.add(new TileEntity(this, "sprites/stone.png", i, 440, "platform"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 440, "platform"));
 				} // W
 				
 				for (int i = 200; i < 280; i += 40){
-					entities.add(new TileEntity(this, "sprites/stone.png", i, 440, "platform"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 440, "platform"));
 				} // W
 				for (int i = 360; i < 440; i += 40){
-					entities.add(new TileEntity(this, "sprites/stone.png", i, 480, "platform"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 480, "platform"));
+				} // W
+				for (int i = 1200; i < 1280; i += 40){
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 640, "platform"));
 				} // W
 				
 				entities.add(new MovableBlockEntity("sprites/box.png", 840, 600, this));
+				
+				door = new DeathEntity("sprites/door.png", 1200, 320, this);
+
+				entities.add(new ButtonEntity(this, "sprites/button.png", 480, 141, door));
+				
 
 				entities.add(goalOne);
 				entities.add(goalTwo);
@@ -866,25 +882,25 @@ public class Game extends Canvas {
 				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 80, 40, playerTwo);
 
 				//platform 1
-				entities.add(new TileEntity(this, "sprites/stone.png", 0, 680, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 40, 680, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 80, 680, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 0, 640, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 40, 640, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 80, 640, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 80, 600, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 0, 680, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 40, 680, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 680, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 0, 640, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 40, 640, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 640, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 600, "platform"));
 
 				// platform 2
-				entities.add(new TileEntity(this, "sprites/stone.png", 440, 680, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 480, 680, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 440, 640, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 480, 640, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 440, 680, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 480, 680, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 440, 640, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 480, 640, "platform"));
 
 				// platform 3
-				entities.add(new TileEntity(this, "sprites/stone.png", 840, 680, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 880, 680, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 840, 640, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 880, 640, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 840, 680, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 880, 680, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 840, 640, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 880, 640, "platform"));
 
 				// death floor
 				entities.add(new DeathEntity("sprites/death.png", 120, 680, this));
@@ -913,14 +929,14 @@ public class Game extends Canvas {
 				entities.add(new DeathEntity("sprites/death.png", 1120, 680, this));
 				
 				// box that holds p2
-				entities.add(new TileEntity(this, "sprites/stone.png", 1160, 680, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 1200, 680, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 1240, 680, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 680, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1200, 680, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1240, 680, "platform"));
 
-				entities.add(new TileEntity(this, "sprites/stone.png", 1160, 640, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 1160, 600, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 1160, 560, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 1120, 560, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 640, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 600, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 560, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1120, 560, "platform"));
 
 				//door and button
 				door = new DeathEntity("sprites/door.png", 1200, 560, this);
@@ -931,30 +947,30 @@ public class Game extends Canvas {
 				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 1120, 600, "sprites/tempBullet.png", -120, 3000, 'l'));
 
 				// platform ladder
-				entities.add(new TileEntity(this, "sprites/stone.png", 1160, 440, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 1200, 440, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 1240, 440, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 440, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1200, 440, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1240, 440, "platform"));
 
-				entities.add(new TileEntity(this, "sprites/stone.png", 1160, 320, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 1200, 320, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 1240, 320, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 320, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1200, 320, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1240, 320, "platform"));
 
-				entities.add(new TileEntity(this, "sprites/stone.png", 1160, 200, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 1200, 200, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 1240, 200, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 1240, 160, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 200, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1200, 200, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1240, 200, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1240, 160, "platform"));
 
 				// second long jumps
-				entities.add(new TileEntity(this, "sprites/stone.png", 800, 200, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 760, 200, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 800, 200, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 760, 200, "platform"));
 
-				entities.add(new TileEntity(this, "sprites/stone.png", 440, 200, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 400, 200, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 440, 200, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 400, 200, "platform"));
 
 				// end platform and shooter
-				entities.add(new TileEntity(this, "sprites/stone.png", 0, 120, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 40, 120, "platform"));
-				entities.add(new TileEntity(this, "sprites/stone.png", 80, 120, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 0, 120, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 40, 120, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 120, "platform"));
 
 				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 80, 160, "sprites/tempBullet.png", 120, 3000, 'r'));
 
