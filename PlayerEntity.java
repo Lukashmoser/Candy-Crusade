@@ -1,36 +1,29 @@
-/* ShipEntity.java
- * March 27, 2006
- * Represents player's ship
- */
+// an individual player
 public class PlayerEntity extends Entity {
 
-	private Game game; // the game in which the ship exists
+	private Game game; // the game in which the player exists
 
-	private double fuelLevel;
+	private double fuelLevel; // the amount of fuel the player has left
 
 
-	/*
-	 * construct the player's ship input: game - the game in which the ship is being
-	 * created ref - a string with the name of the image associated to the sprite
-	 * for the ship x, y - initial location of ship
-	 */
+	// constructor
 	public PlayerEntity(Game g, String r, int newX, int newY, double newFuelLevel) {
 		super(r, newX, newY); // calls the constructor in Entity
 		game = g;
 		fuelLevel = newFuelLevel;
 	} // constructor
 
+	// get the players fuel level
 	public double getFuelLevel(){
 		return fuelLevel;
-	}
+	} // getFuelLevel
 
+	// update the players fuel level
 	public void setFuelLevel(double newLevel){
 		fuelLevel = newLevel;
-	}
+	} // setFuelLevel
 
-	/*
-	 * move input: delta - time elapsed since last move (ms) purpose: move ship
-	 */
+	// move the player based on its movement speed and the time since last movement
 	public void move() {
 		// stop at left side of screen
 		if ((dx < 0) && (x < 0)) {
@@ -49,25 +42,26 @@ public class PlayerEntity extends Entity {
 
 		// stop at bottom of screen
 		if ((dy > 0) && (y > 680)){
-
+			this.setVerticalMovement(0);
 		}
-
 
 		super.move(); // calls the move method in Entity
 	} // move
 
-	/*
-	 * collidedWith input: other - the entity with which the ship has collided
-	 * purpose: notification that the player's ship has collided with something
-	 */
+	// handles collisions with GoalEntity and DeathEntity
 	public void collidedWith(Entity other) {
+		// if it collides with the correct goal entity register complete
 		if(other instanceof GoalEntity){
 			if(((GoalEntity) other).getTarget() == this){
 				game.registerComplete(this);
 			}
-		} else if (other instanceof DeathEntity){
+		} 
+		
+		// if it collides with a DeathEntity notify the game of the players death
+		else if (other instanceof DeathEntity){
 			game.notifyDeath();
 		}
+
 	} // collidedWith
 
-} // ShipEntity class
+} // PlayerEntity

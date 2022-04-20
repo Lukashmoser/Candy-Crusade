@@ -1,32 +1,18 @@
-
-/* Entity.java
- * An entity is any object that appears in the game.
- * It is responsible for resolving collisions and movement.
- */
-
+// an object that appears in the game and deals with detecting collisions
 import java.awt.*;
 import java.util.ArrayList;
 
 public abstract class Entity {
-
-	// Java Note: the visibility modifier "protected"
-	// allows the variable to be seen by this class,
-	// any classes in the same package, and any subclasses
-	// "private" - this class only
-	// "public" - any class can see it
-
 	protected double x; // current x location
 	protected double y; // current y location
 	private Sprite sprite; // this entity's sprite
 	protected double dx; // horizontal speed (px/s) + -> right
 	protected double dy; // vertical speed (px/s) + -> down
 
-	private long delta;
+	private long delta; // time since last check or move
 
-	private Rectangle me = new Rectangle(); // bounding rectangle of
-											// this entity
-	private Rectangle him = new Rectangle(); // bounding rect. of other
-												// entities
+	private Rectangle me = new Rectangle(); // bounding rectangle of this entity
+	private Rectangle him = new Rectangle(); // bounding rectangle of other entities
 
 	/*
 	 * Constructor input: reference to the image for this entity, initial x and y
@@ -48,30 +34,37 @@ public abstract class Entity {
 		y += (delta * dy) / 1000;
 	} // move
 
+	// update time since last move or check
 	public void setDelta(long newDelta) {
 		delta = newDelta;
-	}
-	// get and set velocities
+	} // setDelta
+
+	// set horizontal velocity
 	public void setHorizontalMovement(double newDX) {
 		dx = newDX;
 	} // setHorizontalMovement
 
+	// sey vertical movement
 	public void setVerticalMovement(double newDY) {
 		dy = newDY;
 	} // setVerticalMovement
 
+	// set sprite to display
 	public void setSprite(String r){
 		sprite = (SpriteStore.get()).getSprite(r);
 	}
 
+	// set x position
 	public void setX(int newX){
 		x = newX;
-	}
+	} // setX
 
+	// set y position
 	public void setY(int newY){
 		y = newY;
-	}
+	} // setY
 
+	// get current velocity for x and y
 	public double getHorizontalMovement() {
 		return dx;
 	} // getHorizontalMovement
@@ -89,6 +82,7 @@ public abstract class Entity {
 		return (int) y;
 	} // getY
 
+	// get current sprite
 	public Sprite getSprite(){
 		return sprite;
 	}
@@ -101,14 +95,6 @@ public abstract class Entity {
 	} // draw
 
 	/*
-	 * Do the logic associated with this entity. This method will be called
-	 * periodically based on game events.
-	 */
-	public void doLogic() {
-		
-	}
-
-	/*
 	 * collidesWith input: the other entity to check collision against output: true
 	 * if entities collide purpose: check if this entity collides with the other.
 	 */
@@ -118,12 +104,14 @@ public abstract class Entity {
 		return me.intersects(him);
 	} // collidesWith
 
+	// checks if the entity will collide with something then returns a string with the directions that it will collide with something
 	public String willCollideWithSomething(ArrayList entities) {
 		String result = "";
 		
 		for(int i = 0; i < entities.size(); i++){
-			
+			// checks if the entity it is being compared to is one that it can't directecly collide with
 			if(entities.get(i) instanceof TileEntity || entities.get(i) instanceof MovableBlockEntity || (this instanceof MovableBlockEntity && entities.get(i) instanceof PlayerEntity)) {
+				// sets bounding box for entity that is being compared to
 				him.setBounds(((Entity) entities.get(i)).getX(), ((Entity) entities.get(i)).getY(), ((Entity)entities.get(i)).sprite.getWidth(), ((Entity)entities.get(i)).sprite.getHeight());
 				
 				// checks left for collisions
@@ -161,17 +149,13 @@ public abstract class Entity {
 				if(me.intersects(him)){
 					result += "bottom";
 				}
-			}
-		}
+			} // if
+		} // for
 
 		return result;
-	}
+	} // willCollideWithSomething
 
-	/*
-	 * collidedWith input: the entity with which this has collided purpose:
-	 * notification that this entity collided with another Note: abstract methods
-	 * must be implemented by any class that extends this class
-	 */
+	// allows for direct collision detection and must be implemented by every child of this class
 	public abstract void collidedWith(Entity other);
 
 } // Entity class

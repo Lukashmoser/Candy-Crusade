@@ -21,81 +21,40 @@ public class Game extends Canvas {
 	// playerOne movement keys
 	private boolean leftPressedOne = false; // true if left arrow key currently pressed
 	private boolean rightPressedOne = false; // true if right arrow key currently pressed
-	private boolean firePressed = false; // true if firing
 	private boolean upPressedOne = false; // true if up arrow is pressed
-	private boolean bPressed = false; // true if b is pressed
 
 	// playerTwo movement keys
 	private boolean leftPressedTwo = false; // true if left arrow key currently pressed
 	private boolean rightPressedTwo = false; // true if right arrow key currently pressed
 	private boolean upPressedTwo = false; // true if up arrow is pressed
 
-	private boolean gameRunning = true;
-	private boolean levelRunning = true;
-	private boolean levelCleared = false;
-	private boolean playerOneCleared = false;
-	private boolean playerTwoCleared = false;
-	private int currentLevel = 1;
-	private String background = ""; 
-	private ArrayList entities = new ArrayList(); // list of entities
-													// in game
-	private ArrayList removeEntities = new ArrayList(); // list of entities
-														// to remove this loop
+	private boolean gameRunning = true; // whether or not the game is running
+	private boolean levelRunning = true; // whether or not an individual level is running
+	private boolean levelCleared = false; // whether or not the level has been cleared
+	private boolean playerOneCleared = false; // whether or not playerOne has cleared the level
+	private boolean playerTwoCleared = false; // whether or not playerTwo has cleared the level
+	private int currentLevel = 1; // the current level
+	private String background = ""; // the image to grab from sprite store to display as the background
+	private ArrayList entities = new ArrayList(); // list of entities currently in game
+	private ArrayList removeEntities = new ArrayList(); // list of entities to remove this loop
 	private Entity playerOne; // first player
 	private Entity playerTwo; // second player
 	private String playerOneCollisions; // directions of movement that will result in a collision for playerOne
 	private String playerTwoCollisions; // directions of movement that will result in a collision for playerTwo
 	private double moveSpeed = 200; // hor. vel. of ship (px/s)
-	private int alienCount; // # of aliens left on screen
-	private int gravity = 150;
-	private double initialFuelLevelOne;
-	private double initialFuelLevelTwo;
+	private int gravity = 150; // strength of gravity
+	private double initialFuelLevelOne; // max fuel level of playerOne for each level
+	private double initialFuelLevelTwo; // max fuel level of playerTwo for each level
 
 	// dynamic entities
-	private Entity goalOne;
-	private Entity goalTwo;
-	private Entity door;
+	private Entity goalOne; // the end goal of the level for playerOne
+	private Entity goalTwo; // the end goal of the level for playerTwo
+	private Entity door; // to be passed into the corresponding button
+	private Entity buttonOne; // a button that will be on the screen only if required
+	private Entity buttonTwo; // another button that will be on the screen only if required
 
-	// tile entities
-	private Entity tileStone1;
-	private Entity tileStone2;
-	private Entity tileStone3;
-	private Entity tileStone4;
-	private Entity tileStone5;
-	private Entity tileStone6;
-	private Entity tileStone7;
-	private Entity tileStone8;
-	private Entity tileStone9;
-	private Entity tileStone10;
-	private Entity tileStone11;
-	private Entity tileStone12;
-	private Entity tileStone13;
-	private Entity tileStone14;
-	private Entity tileStone15;
-	private Entity tileStone16;
-	private Entity tileStone17;
-	private Entity tileStone18;
-	private Entity tileStone19;
-	private Entity tileStone20;
-	private Entity tileStone21;
-	private Entity tileStone22;
-	private Entity tileStone24;
-	private Entity tileStone25;
-	private Entity tileStone26;
-	private Entity tileStone27;
-	private Entity tileStone28;
-	private Entity tileStone29;
-	private Entity tileStone30;
-	private Entity tileStone31;
-	private Entity tileStone32;
-	private Entity tileStone33;
 	
-	private String message = ""; // message to display while waiting
-									// for a key press
-
-	private boolean logicRequiredThisLoop = false; // true if logic
-													// needs to be
-													// applied this loop
+	private String message = ""; // message to display while waiting for a key press
 
 	/*
 	 * Construct our game and set it running.
@@ -141,10 +100,8 @@ public class Game extends Canvas {
 		createBufferStrategy(2);
 		strategy = getBufferStrategy();
 
-		// TO DO Create loop here that called a specific initEntities based on the current level
-		// then runs gameLoop until the level is completed or they die
-		// if they die the level is cleared and re init
-		// if they complete the level the level is cleared and the next level is loaded
+		
+		// runs the game until all levels have been complete
 		while(gameRunning){
 			initLevel(currentLevel);
 			levelLoop();
@@ -154,19 +111,21 @@ public class Game extends Canvas {
 		}
 	} // constructor
 
+	// allows other enities to get a list of the other entities
 	public ArrayList getEntities(){
 		return entities;
-	}
+	} // getEntities
 
+	// initializes level based on current level
 	private void initLevel(int level){
 		// reset variables that remain constant between level
-		entities.clear();
-		removeEntities.clear();
-		playerOneCleared = false;
-		playerTwoCleared = false;
-		levelCleared = false;
+		entities.clear(); // clears previous entities
+		removeEntities.clear(); // clears entities in removeEntities
+		playerOneCleared = false; // playerOne has not completed the level
+		playerTwoCleared = false; // playerTwo has not completed the level
+		levelCleared = false; // the level has not been cleared
 
-		// reset and set varibles that change with each level
+		// set varibles that can change with each level
 		switch(level){
 			case 1:
 				initialFuelLevelOne = 45;
@@ -176,55 +135,58 @@ public class Game extends Canvas {
 			case 2:
 				initialFuelLevelOne = 45;
 				initialFuelLevelTwo = 45;
+				background = "sprites/BackgroundTwo.png";
 				break;
 			case 3:
 				initialFuelLevelOne = 45;
 				initialFuelLevelTwo = 45;
+				background = "sprites/BackgroundTwo.png";
 				break;
 			case 4:
+				initialFuelLevelOne = 45;
+				initialFuelLevelTwo = 45;
+				background = "sprites/BackgroundTwo.png";
 				break;
 			case 5:
+				initialFuelLevelOne = 45;
+				initialFuelLevelTwo = 45;
+				background = "sprites/BackgroundTwo.png";
 				break;
 			case 6:
+				initialFuelLevelOne = 45;
+				initialFuelLevelTwo = 45;
+				background = "sprites/BackgroundTwo.png";
 				break;
 			case 7:
+				initialFuelLevelOne = 45;
+				initialFuelLevelTwo = 45;
+				background = "sprites/BackgroundTwo.png";
 				break;
 			case 8:
+				initialFuelLevelOne = 45;
+				initialFuelLevelTwo = 45;
+				background = "sprites/BackgroundTwo.png";
 				break;
 		}
 
-		// init and start level
+		// initEntites for the level and start it
 		initEntities(level);
 		levelRunning = true;
 	}
 
-	/*
-	 * Notification from a game entity that the logic of the game should be run at
-	 * the next opportunity
-	 */
-	public void updateLogic() {
-		logicRequiredThisLoop = true;
-	} // updateLogic
-
-	/*
-	 * Remove an entity from the game. It will no longer be moved or drawn.
-	 */
+	// removes an entity from the game, it will no longer be drawn
 	public void removeEntity(Entity entity) {
 		removeEntities.add(entity);
 	} // removeEntity
 
-	/*
-	 * Notification that the player has died.
-	 */
+	// notify that a player has died and restart the level
 	public void notifyDeath() {
 		message = "You died.";
 		waitingForKeyPress = true;
 		levelRunning = false;
 	} // notifyDeath
 
-	/*
-	 * register a player that has completed the level
-	 */
+	// check if the parameters for a level to be complete are met
 	public void registerComplete(Entity player) {
 		if(player == playerOne){
 			playerOneCleared = true;
@@ -235,32 +197,13 @@ public class Game extends Canvas {
 			levelRunning = false;
 			levelCleared = true;
 		}
-	} // notifyComplete
+	} // registerComplete
 
-	/*
-	 * Notification than an alien has been killed
-	 */
-	public void notifyAlienKilled() {
-		alienCount--;
-
-		if (alienCount == 0) {
-			//notifyWin();
-		} // if
-
-		// speed up existing aliens
-		for (int i = 0; i < entities.size(); i++) {
-			Entity entity = (Entity) entities.get(i);
-			if (entity instanceof AlienEntity) {
-				// speed up by 2%
-				entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.04);
-			} // if
-		} // for
-	} // notifyAlienKilled
-
-	public void tryToJump(Entity player, String collisions) { // check that the character is on the ground then jump
+	// have the player attempt to jump, if it hits the ceiling or has not fuel don't jump
+	public void tryToJump(Entity player, String collisions) {
 		double fuelLevel = ((PlayerEntity) player).getFuelLevel();
 		
-		// add fuel check to jump
+		// checks fuel level and collision
 		if(collisions.contains("top") || fuelLevel <= 0){
 			return;
 		} else {
@@ -271,7 +214,7 @@ public class Game extends Canvas {
 		}
 	} // tryToJump
 
-	// checks if a individual shot generator is able to fire then if it is able to it generates a shot based on the generators parameters and shoots it
+	// checks if a individual shot generator is able to fire then generates a shot based the given parameters
 	public void tryToFire(Entity generator){
 		int x = 0;
 		int y = 0;
@@ -300,6 +243,7 @@ public class Game extends Canvas {
 					break;
 			}
 			
+			// creates the shot entity
 			Entity tempShot = new DeathEntity(((ShotGeneratorEntity) generator).getShotSprite(), x, y, this);
 			
 			// set the shots movement
@@ -309,35 +253,30 @@ public class Game extends Canvas {
 				tempShot.setVerticalMovement(((ShotGeneratorEntity) generator).getShotMoveSpeed());
 			}
 
+			// makes the shot be displayed on the screen
 			entities.add(tempShot);
 
+			// updates the generators time of last shot
 			((ShotGeneratorEntity) generator).setTimeOfLastShot(System.currentTimeMillis());
-		}
+		} // if
 	} // tryToFire
 
-	/*
-	 * gameLoop input: none output: none purpose: Main game loop. Runs throughout
-	 * game play. Responsible for the following activities: - calculates speed of
-	 * the game loop to update moves - moves the game entities - draws the screen
-	 * contents (entities, text) - updates game events - checks input
-	 */
+	// calculates speed of the game loop to update moves - moves the game entities - draws the screen contents (entities, text) - updates game events - checks input
 	public void levelLoop() {
 		long lastLoopTime = System.currentTimeMillis();
 
-		// keep loop running until game ends
+		// keep loop running until level ends
 		while (levelRunning) {
 
-			// calc. time since last update, will be used to calculate
-			// entities movement
+			// calc. time since last update, will be used to calculate entities movement
 			long delta = System.currentTimeMillis() - lastLoopTime;
 			lastLoopTime = System.currentTimeMillis();
 
-			// get graphics context for the accelerated surface and make it black
-			
+			// get graphics context for the accelerated surface and make it display the background image
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
-			
 			g.drawImage((SpriteStore.get()).getSprite(background).getImage(), 0, 0, null);
 
+			// move entities if not waiting for keypress
 			if (!waitingForKeyPress) {
 				for (int i = 0; i < entities.size(); i++) {
 					Entity entity = (Entity) entities.get(i);
@@ -362,10 +301,7 @@ public class Game extends Canvas {
 			(SpriteStore.get()).getSprite("sprites/P2JetPackBar.png").draw(g, 1075, 10);
 			g.fillRect(1085, 20, (int) ((101 - (int) ((((PlayerEntity) playerTwo).getFuelLevel() / initialFuelLevelTwo) * 100)) * 1.42), 20);
 
-			// brute force collisions, compare every entity
-			// against every other entity. If any collisions
-			// are detected notify both entities that it has
-			// occurred
+			// brute force collisions, compare every entity against every other entity. If any collisions are detected notify both entities that it has occurred
 			for (int i = 0; i < entities.size(); i++) {
 				// auto set button pressed to false
 				if(entities.get(i) instanceof ButtonEntity){
@@ -407,26 +343,13 @@ public class Game extends Canvas {
 							((ButtonEntity) entities.get(i)).getTarget().setY(((ButtonEntity) entities.get(i)).getOriginY());
 						}
 					}
-				}
+				} // if
 				
 			} // outer for
-
-			
-			for(int i = 0; i < entities.size(); i++){
-			}
 
 			// remove dead entities
 			entities.removeAll(removeEntities);
 			removeEntities.clear();
-
-			// run logic if required
-			if (logicRequiredThisLoop) {
-				for (int i = 0; i < entities.size(); i++) {
-					Entity entity = (Entity) entities.get(i);
-					entity.doLogic();
-				} // for
-				logicRequiredThisLoop = false;
-			} // if
 
 			// if waiting for "any key press", draw message
 			if (waitingForKeyPress) {
@@ -437,7 +360,6 @@ public class Game extends Canvas {
 
 			// clear graphics and flip buffer
 			g.dispose();
-			
 			strategy.show();
 
 			// store potential collsions for player character
@@ -462,7 +384,7 @@ public class Game extends Canvas {
 				playerTwo.setVerticalMovement(gravity); // gravity must be equal to jump speed
 			}
 
-			// respond to playerOne moving character left or right
+			// respond to playerOne moving character
 			if ((leftPressedOne) && (!rightPressedOne) && !(playerOneCollisions.contains("left"))) {
 				playerOne.setHorizontalMovement(-moveSpeed);
 				if(upPressedOne){
@@ -485,7 +407,7 @@ public class Game extends Canvas {
 				}
 			}
 
-			// respond to playerTwo moving character left or right
+			// respond to playerTwo moving character
 			if ((leftPressedTwo) && (!rightPressedTwo) && !(playerTwoCollisions.contains("left"))) {
 				playerTwo.setHorizontalMovement(-moveSpeed);
 				if(upPressedTwo){
@@ -508,11 +430,6 @@ public class Game extends Canvas {
 				}
 			}
 
-			// if spacebar pressed, try to fire
-			if (firePressed) {
-				// tryToFire();
-			} // if
-
 			// if up arrow pressed try to jump
 			if (upPressedOne) {
 				tryToJump(playerOne, playerOneCollisions);
@@ -522,11 +439,7 @@ public class Game extends Canvas {
 				tryToJump(playerTwo, playerTwoCollisions);
 			}
 
-			if (bPressed) {
-				// tryToBomb();
-			}
-
-			// pause
+			// set delays so the game runs at 60fps
 			try {
 				Thread.sleep(16);
 			} catch (Exception e) {
@@ -534,41 +447,30 @@ public class Game extends Canvas {
 
 		} // while
 
-	} // gameLoop
+	} // levelLoop
 
-	/*
-	 * startGame input: none output: none purpose: start a fresh game, clear old
-	 * data
-	 */
+	// start a fresh level and clear keyboard settings
 	private void startGame() {
 		// clear out any existing entities and initalize a new set
 		entities.clear();
 
+		// generate level
 		initLevel(currentLevel);
 
 		// blank out any keyboard settings that might exist
 		leftPressedOne = false;
 		rightPressedOne = false;
-		firePressed = false;
 		upPressedOne = false;
-		bPressed = false;
 		leftPressedTwo = false;
 		rightPressedTwo = false;
 		upPressedTwo = false;
 	} // startGame
 
-	/*
-	 * inner class KeyInputHandler handles keyboard input from the user
-	 */
+	// handles key input from the users
 	private class KeyInputHandler extends KeyAdapter {
 
-		private int pressCount = 1; // the number of key presses since
-									// waiting for 'any' key press
+		private int pressCount = 1; // the number of key presses since waiting for 'any' key press
 
-		/*
-		 * The following methods are required for any class that extends the abstract
-		 * class KeyAdapter. They handle keyPressed, keyReleased and keyTyped events.
-		 */
 		public void keyPressed(KeyEvent e) {
 
 			// if waiting for keypress to start game, do nothing
@@ -600,14 +502,6 @@ public class Game extends Canvas {
 			if (e.getKeyCode() == KeyEvent.VK_UP) {
 				upPressedTwo = true;
 			} // if
-
-			if (e.getKeyCode() == KeyEvent.VK_B) {
-				bPressed = true;
-			} // if
-
-			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-				firePressed = true;
-			} // if
 		} // keyPressed
 
 		public void keyReleased(KeyEvent e) {
@@ -616,7 +510,7 @@ public class Game extends Canvas {
 				return;
 			} // if
 
-			// respond to move left, right or fire
+			// respond to move left, right or jump
 			if (e.getKeyCode() == KeyEvent.VK_A) {
 				leftPressedOne = false;
 			} // if
@@ -640,15 +534,6 @@ public class Game extends Canvas {
 			if (e.getKeyCode() == KeyEvent.VK_UP) {
 				upPressedTwo = false;
 			} // if
-
-			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-				firePressed = false;
-			} // if
-
-			if (e.getKeyCode() == KeyEvent.VK_B) {
-				bPressed = false;
-			}
-
 		} // keyReleased
 
 		public void keyTyped(KeyEvent e) {
@@ -671,130 +556,11 @@ public class Game extends Canvas {
 		} // keyTyped
 
 	} // class KeyInputHandler
-	/*
-	 * initEntities input: none output: none purpose: Initialise the starting state
-	 * of the ship and alien entities. Each entity will be added to the array of
-	 * entities in the game.
-	 */
+	
+	// initialize the starting state of entities for a specific level
 	private void initEntities(int level) {
 		switch(level){
 			case 1:
-				// create players and and put in correct location
-				playerOne = new PlayerEntity(this, "sprites/blankPlayer.gif", 40, 60, initialFuelLevelOne);
-				playerTwo = new PlayerEntity(this, "sprites/blankPLayer.gif", 400, 580, initialFuelLevelTwo);
-
-				// create goal location for each player
-				goalOne = new GoalEntity("sprites/blankPlayer.gif", 300, 80, playerOne);
-				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 800, 600, playerTwo);
-
-				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 120, 80, "sprites/tempBullet.png", 100, 1500, 'r'));
-				entities.add(new DeathEntity("sprites/leftPlayer.gif", 100, 600, this));// death entity
-
-				entities.add(new MovableBlockEntity("sprites/chocolate.png", 800, 640, this));
-
-				
-
-				// tip : order in entities is order of drawing(if something needs to be infront put it later)
-				for (int i = 0; i < 1280; i += 40){
-					tileStone1 = new TileEntity(this, "sprites/chocolate.png", i, 0, "platform");
-					entities.add(tileStone1);
-				} // W
-				
-				tileStone2 = new TileEntity(this, "sprites/chocolate.png", 1240, 40, "wall");
-				entities.add(tileStone2);
-				
-				tileStone3 = new TileEntity(this, "sprites/chocolate.png", 1240, 80, "wall");
-				entities.add(tileStone3);
-
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 1240, 120, "wall"));
-				
-				for (int i = 0; i < 1040; i += 40){
-					tileStone5 = new TileEntity(this, "sprites/chocolate.png", i, 160, "platform");
-					entities.add(tileStone5);
-				} // W
-				tileStone6 = new TileEntity(this, "sprites/chocolate.png", 1240, 160, "wall");
-				entities.add(tileStone6);
-
-				tileStone7 = new TileEntity(this, "sprites/chocolate.png", 0, 200, "wall");
-				entities.add(tileStone7);
-				tileStone8 = new TileEntity(this, "sprites/chocolate.png", 1240, 200, "wall");
-				entities.add(tileStone8);
-
-				tileStone9 = new TileEntity(this, "sprites/chocolate.png", 0, 240, "wall");
-				entities.add(tileStone9);
-				tileStone10 = new TileEntity(this, "sprites/chocolate.png", 1240, 240, "wall");
-				entities.add(tileStone10);
-				
-				tileStone11 = new TileEntity(this, "sprites/chocolate.png", 0, 280, "wall");
-				entities.add(tileStone11);
-				tileStone12 = new TileEntity(this, "sprites/chocolate.png", 1240, 280, "wall");
-				entities.add(tileStone12);
-
-				tileStone13 = new TileEntity(this, "sprites/chocolate.png", 0, 320, "wall");
-				entities.add(tileStone13);
-				for (int i = 200; i < 1280; i += 40){
-					tileStone14 = new TileEntity(this, "sprites/chocolate.png", i, 320, "platform");
-					entities.add(tileStone14);
-				} // W
-
-				tileStone15 = new TileEntity(this, "sprites/chocolate.png", 0, 360, "wall");
-				entities.add(tileStone15);
-				tileStone16 = new TileEntity(this, "sprites/chocolate.png", 1240, 360, "wall");
-				entities.add(tileStone16);
-
-				tileStone17 = new TileEntity(this, "sprites/chocolate.png", 0, 400, "wall");
-				entities.add(tileStone17);
-				tileStone18 = new TileEntity(this, "sprites/chocolate.png", 1240, 400, "wall");
-				entities.add(tileStone18);
-				
-				tileStone19 = new TileEntity(this, "sprites/chocolate.png", 0, 440, "wall");
-				entities.add(tileStone19);
-				tileStone20 = new TileEntity(this, "sprites/chocolate.png", 1240, 440, "wall");
-				entities.add(tileStone20);
-
-				for (int i = 0; i < 560; i += 40){
-					tileStone21 = new TileEntity(this, "sprites/chocolate.png", i, 480, "platform");
-					entities.add(tileStone21);
-				} // W
-				tileStone22 = new TileEntity(this, "sprites/chocolate.png", 1240, 480, "wall");
-				entities.add(tileStone22);
-
-				tileStone24 = new TileEntity(this, "sprites/chocolate.png", 0, 520, "wall");
-				entities.add(tileStone24);
-				for (int i = 560; i < 1040; i += 40){
-					tileStone25 = new TileEntity(this, "sprites/chocolate.png", i, 520, "platform");
-					entities.add(tileStone25);
-				} // W
-				tileStone26 = new TileEntity(this, "sprites/chocolate.png", 1240, 520, "wall");
-				entities.add(tileStone26);
-
-				tileStone27 = new TileEntity(this, "sprites/chocolate.png", 0, 560, "wall");
-				entities.add(tileStone27);
-				tileStone28 = new TileEntity(this, "sprites/chocolate.png", 1240, 560, "wall");
-				entities.add(tileStone28);
-
-				tileStone29 = new TileEntity(this, "sprites/chocolate.png", 0, 600, "wall");
-				entities.add(tileStone29);
-				tileStone30 = new TileEntity(this, "sprites/chocolate.png", 1240, 600, "wall");
-				entities.add(tileStone30);
-				
-				tileStone31 = new TileEntity(this, "sprites/chocolate.png", 0, 640, "wall");
-				entities.add(tileStone31);
-				tileStone32 = new TileEntity(this, "sprites/chocolate.png", 1240, 640, "wall");
-				entities.add(tileStone32);
-
-				for (int i = 0; i < 1280; i += 40){
-					tileStone33 = new TileEntity(this, "sprites/chocolate.png", i, 680, "platform");
-					entities.add(tileStone33);
-				} // W
-
-				entities.add(goalOne);
-				entities.add(goalTwo);
-
-				entities.add(playerOne);
-				entities.add(playerTwo);
-				break;
-			case 2:
 				playerOne = new PlayerEntity(this, "sprites/BaseFrontCharacter.png", 0, 0, initialFuelLevelOne);
 				playerTwo = new PlayerEntity(this, "sprites/blankPLayer.gif", 0, 80, initialFuelLevelTwo);
 				
@@ -802,27 +568,27 @@ public class Game extends Canvas {
 				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 80, 280, playerTwo);
 				
 				for (int i = 0; i < 640; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 160, "platform"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 160));
 				} // W
 				for (int i = 200; i < 520; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", 600, i, "wall"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", 600, i));
 				} // W
 				for (int i = 640; i < 1160; i += 40){
-				entities.add(new TileEntity(this, "sprites/chocolate.png", i, 480, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", i, 480));
 				} // W
 				for (int i = 320; i < 520; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, i, "wall"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, i));
 				} // W
 				
 				for (int i = 640; i < 760; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 320, "platform"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 320));
 				} // W
 				
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 880, 320, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 920, 320, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 880, 320));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 920, 320));
 				
 				for (int i = 1080; i < 1160; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 320, "platform"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 320));
 				} // W
 				
 				for (int i = 640; i < 1160; i += 40){
@@ -830,7 +596,7 @@ public class Game extends Canvas {
 				} // W
 				
 				for (int i = 640; i < 720; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", 0, i, "wall"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", 0, i));
 				} // W
 				
 				for (int i = 40; i < 400; i += 40){
@@ -838,41 +604,47 @@ public class Game extends Canvas {
 				} // W
 				
 				for (int i = 640; i < 720; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", 400, i, "wall"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", 400, i));
 				} // W
 				
 				for (int i = 440; i < 1280; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 680, "platform"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 680));
 				} // W
 				
 				for (int i = 0; i < 120; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 440, "platform"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 440));
 				} // W
 				
 				for (int i = 200; i < 280; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 440, "platform"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 440));
 				} // W
 				for (int i = 360; i < 440; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 480, "platform"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 480));
 				} // W
 				for (int i = 1200; i < 1280; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 640, "platform"));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 640));
 				} // W
 				
 				entities.add(new MovableBlockEntity("sprites/box.png", 840, 600, this));
 				
 				door = new DeathEntity("sprites/door.png", 1200, 320, this);
 
-				entities.add(new ButtonEntity(this, "sprites/button.png", 480, 141, door));
+				buttonOne = new ButtonEntity(this, "sprites/button.png", 480, 141, door);
+				buttonTwo = new ButtonEntity(this, "sprites/button.png", 1200, 621, door, buttonOne);
+
+				((ButtonEntity) buttonOne).setSecondButton(buttonTwo);
 				
+				entities.add(buttonOne);
+				entities.add(buttonTwo);
+				entities.add(door);
 
 				entities.add(goalOne);
 				entities.add(goalTwo);
 				
 				entities.add(playerOne);
 				entities.add(playerTwo);
-				break;
-			case 3:
+			break;
+			case 2:
 				// create players and and put in correct location
 				playerOne = new PlayerEntity(this, "sprites/blankPlayer.gif", 20, 560, initialFuelLevelOne);
 				playerTwo = new PlayerEntity(this, "sprites/blankPLayer.gif", 1205, 610, initialFuelLevelTwo);
@@ -882,25 +654,25 @@ public class Game extends Canvas {
 				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 80, 40, playerTwo);
 
 				//platform 1
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 0, 680, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 40, 680, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 680, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 0, 640, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 40, 640, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 640, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 600, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 0, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 40, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 0, 640));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 40, 640));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 640));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 600));
 
 				// platform 2
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 440, 680, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 480, 680, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 440, 640, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 480, 640, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 440, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 480, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 440, 640));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 480, 640));
 
 				// platform 3
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 840, 680, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 880, 680, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 840, 640, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 880, 640, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 840, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 880, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 840, 640));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 880, 640));
 
 				// death floor
 				entities.add(new DeathEntity("sprites/death.png", 120, 680, this));
@@ -929,14 +701,14 @@ public class Game extends Canvas {
 				entities.add(new DeathEntity("sprites/death.png", 1120, 680, this));
 				
 				// box that holds p2
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 680, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 1200, 680, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 1240, 680, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1200, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1240, 680));
 
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 640, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 600, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 560, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 1120, 560, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 640));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 600));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 560));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1120, 560));
 
 				//door and button
 				door = new DeathEntity("sprites/door.png", 1200, 560, this);
@@ -947,30 +719,30 @@ public class Game extends Canvas {
 				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 1120, 600, "sprites/tempBullet.png", -120, 3000, 'l'));
 
 				// platform ladder
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 440, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 1200, 440, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 1240, 440, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1200, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1240, 440));
 
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 320, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 1200, 320, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 1240, 320, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 320));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1200, 320));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1240, 320));
 
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 200, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 1200, 200, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 1240, 200, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 1240, 160, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 200));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1200, 200));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1240, 200));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1240, 160));
 
 				// second long jumps
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 800, 200, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 760, 200, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 800, 200));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 760, 200));
 
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 440, 200, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 400, 200, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 440, 200));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 400, 200));
 
 				// end platform and shooter
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 0, 120, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 40, 120, "platform"));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 120, "platform"));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 0, 120));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 40, 120));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 120));
 
 				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 80, 160, "sprites/tempBullet.png", 120, 3000, 'r'));
 
@@ -979,6 +751,9 @@ public class Game extends Canvas {
 				entities.add(goalTwo);
 				entities.add(playerOne);
 				entities.add(playerTwo);
+				break;
+			case 3:
+				
 				break;
 			case 4:
 				break;
@@ -992,10 +767,9 @@ public class Game extends Canvas {
 				break;
 		}
 	} // initEntities
-	/**
-	 * Main Program
-	 */
-	public static void main(String[] args) {
+
+	// starts the game when the program is opened
+	 public static void main(String[] args) {
 		// instantiate this object
 		new Game();
 	} // main
