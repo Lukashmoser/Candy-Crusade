@@ -31,7 +31,7 @@ public class Sprite {
 	// return image of sprite
 	public Image getImage(){
 		return image;
-	}
+	} // getImage
 
 	// draw the sprite in the graphics object provided at location (x,y)
 	public void draw(Graphics g, int x, int y) {

@@ -1,10 +1,7 @@
-/* ShotEntity.java
- * March 27, 2006
- * Represents player's ship
- */
+// generates projectiles based on the given parameters
 public class ShotGeneratorEntity extends Entity {
 
-	private Game game; // the game in which the ship exists
+	private Game game; // the game in which the shoteGenerator exists
 
 	private String shotSprite; // the type of projectile it shoots
 	private int shotMoveSpeed; // movement speed of the shot
@@ -13,11 +10,7 @@ public class ShotGeneratorEntity extends Entity {
 	private char directionOfShot; // what direction the generator shoots
 
 
-	/*
-	 * construct the shot input: game - the game in which the shot is being created
-	 * ref - a string with the name of the image associated to the sprite for the
-	 * shot x, y - initial location of shot
-	 */
+	// constructor
 	public ShotGeneratorEntity(Game g, String r, int newX, int newY, String shotType, int newShotSpeed, int newShootingInterval, char newDirectionOfShot) {
 		super(r, newX, newY); // calls the constructor in Entity
 		game = g;
@@ -27,35 +20,37 @@ public class ShotGeneratorEntity extends Entity {
 		directionOfShot = newDirectionOfShot;
 	} // constructor
 
+	// get the shots sprite
 	public String getShotSprite(){
 		return shotSprite;
-	}
+	} // getShotSprite
 
+	// get the shots movement speed
 	public int getShotMoveSpeed(){
 		return shotMoveSpeed;
-	}
+	} // getShotMoveSpeed
 
+	// get how often the generator should shoot
 	public int getShootingInterval(){
 		return shootingInterval;
-	}
+	} // getShootingInterval
 
+	// get the time that the generator last shot
 	public double getTimeOfLastShot(){
 		return timeOfLastShot;
-	}
+	} // getTimeOfLastShot
 
+	// get the direction that the generator should shoot
 	public char getDirectionOfShot(){
 		return directionOfShot;
-	}
+	} // getDirectionOfShot
 
+	// sets the last time that the generator shot
 	public void setTimeOfLastShot(double time){
 		timeOfLastShot = time;
-	}
+	} // setTimeOfLastShot
 
-	/*
-	 * collidedWith input: other - the entity with which the shot has collided
-	 * purpose: notification that the shot has collided with something
-	 */
-	public void collidedWith(Entity other) {
-	} // collidedWith
+	// direct collisions handled in other entities
+	public void collidedWith(Entity other) {}
 
 } // ShipEntity class

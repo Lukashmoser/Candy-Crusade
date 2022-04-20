@@ -1,24 +1,12 @@
+// platforms and walls that the player can stand on and run into
 public class TileEntity extends Entity {
 
-    private Game game;
-    
-    private String type;
+    private Game game; // the game that this entity exists in
 
 
-    public TileEntity(Game g, String r, int newX, int newY, String newType) {
+    public TileEntity(Game g, String r, int newX, int newY) {
         super(r, newX, newY);
-
         game = g;
-
-        type = newType;
-    }
-
-    public String getTileType(){
-        return type;
-    }
-
-    public void setTileType(String newType){
-        type = newType;
     }
 
     public void collidedWith(Entity other){}
