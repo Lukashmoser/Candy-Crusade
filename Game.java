@@ -33,7 +33,7 @@ public class Game extends Canvas {
 	private boolean levelCleared = false; // whether or not the level has been cleared
 	private boolean playerOneCleared = false; // whether or not playerOne has cleared the level
 	private boolean playerTwoCleared = false; // whether or not playerTwo has cleared the level
-	private int currentLevel = 1; // the current level
+	private int currentLevel = 7; // the current level
 	private String background = ""; // the image to grab from sprite store to display as the background
 	private ArrayList entities = new ArrayList(); // list of entities currently in game
 	private ArrayList removeEntities = new ArrayList(); // list of entities to remove this loop
@@ -1454,7 +1454,209 @@ public class Game extends Canvas {
 				entities.add(playerTwo);
 				break;
 			case 7:
+				// create players and and put in correct location
+				playerOne = new PlayerEntity(this, "sprites/PlayerOneForward.png", 420, 20, initialFuelLevelOne);
+				playerTwo = new PlayerEntity(this, "sprites/PlayerTwoForward.png", 800, 20, initialFuelLevelTwo);
+
+				// create goal location for each player
+				goalOne = new GoalEntity("sprites/blankPlayer.gif", 1240, 560, playerOne);
+				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 0, 560, playerTwo);
+
+				// middle divider
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 600, 0));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 640, 0));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 600, 40));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 640, 40));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 600, 80));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 640, 80));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 600, 120));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 640, 120));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 600, 160));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 640, 160));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 600, 200));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 640, 200));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 600, 240));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 640, 240));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 600, 280));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 640, 280));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 600, 320));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 640, 320));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 600, 360));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 640, 360));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 600, 400));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 640, 400));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 600, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 640, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 600, 480));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 640, 480));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 600, 520));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 640, 520));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 600, 560));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 640, 560));
+
+				// left side top half
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 120, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 160, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 200, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 240, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 280, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 320, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 360, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 400, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 440, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 480, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 520, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 560, 440));
+
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 120, 120));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 160, 120));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 120));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 160));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 200));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 240));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 280));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 320));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 360));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 400));
+
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 280, 0));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 280, 40));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 280, 80));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 280, 120));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 280, 160));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 280, 200));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 280, 240));
+
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 200, 280));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 240, 280));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 280, 280));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 320, 280));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 360, 280));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 400, 280));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 440, 280));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 480, 280));
+
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 400, 120));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 440, 120));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 480, 120));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 520, 120));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 560, 120));
+
+				// right side top half
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 680, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 720, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 760, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 800, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 840, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 880, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 920, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 960, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1000, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1040, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1080, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1120, 440));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 440));
+
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1080, 120));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1120, 120));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 120));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 160));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 200));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 240));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 280));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 320));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 360));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 400));
+
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 960, 0));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 960, 40));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 960, 80));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 960, 120));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 960, 160));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 960, 200));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 960, 240));
+
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 760, 280));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 800, 280));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 840, 280));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 880, 280));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 920, 280));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 960, 280));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1000, 280));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1040, 280));
+
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 680, 120));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 720, 120));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 760, 120));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 800, 120));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 840, 120));
+
+				// bottom jump and duck
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 560));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 600));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 640));
 				
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 280, 480));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 280, 520));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 280, 560));
+
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 480, 560));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 480, 600));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 480, 640));
+
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 760, 560));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 760, 600));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 760, 640));
+
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 960, 480));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 960, 520));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 960, 560));
+
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 560));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 600));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 640));
+
+
+				// floor
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 0, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 40, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 120, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 160, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 200, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 240, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 280, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 320, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 360, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 400, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 440, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 480, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 520, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 560, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 600, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 640, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 680, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 720, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 760, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 800, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 840, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 880, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 920, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 960, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1000, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1040, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1080, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1120, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1200, 680));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 1240, 680));
+
+				// players and goals
+				entities.add(goalOne);
+				entities.add(goalTwo);
+				entities.add(playerOne);
+				entities.add(playerTwo);
 				break;
 			case 8:
 				break;
