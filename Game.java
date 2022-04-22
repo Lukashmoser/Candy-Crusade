@@ -572,7 +572,7 @@ public class Game extends Canvas {
 		switch(level){
 			case 1:
 				playerOne = new PlayerEntity(this, "sprites/BaseFrontCharacter.png", 0, 0, initialFuelLevelOne);
-				playerTwo = new PlayerEntity(this, "sprites/blankPLayer.gif", 0, 80, initialFuelLevelTwo);
+				playerTwo = new PlayerEntity(this, "sprites/blankPlayer.gif", 0, 80, initialFuelLevelTwo);
 				
 				goalOne = new GoalEntity("sprites/blankPlayer.gif", 0, 280, playerOne);
 				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 80, 280, playerTwo);
@@ -657,7 +657,7 @@ public class Game extends Canvas {
 			case 2:
 				// create players and and put in correct location
 				playerOne = new PlayerEntity(this, "sprites/blankPlayer.gif", 20, 560, initialFuelLevelOne);
-				playerTwo = new PlayerEntity(this, "sprites/blankPLayer.gif", 1205, 610, initialFuelLevelTwo);
+				playerTwo = new PlayerEntity(this, "sprites/blankPlayer.gif", 1205, 610, initialFuelLevelTwo);
 
 				// create goal location for each player
 				goalOne = new GoalEntity("sprites/blankPlayer.gif", 20, 40, playerOne);
@@ -765,7 +765,7 @@ public class Game extends Canvas {
 			case 3:
 				// create players and and put in correct location
 				playerOne = new PlayerEntity(this, "sprites/blankPlayer.gif", 160, 560, initialFuelLevelOne);
-				playerTwo = new PlayerEntity(this, "sprites/blankPLayer.gif", 1040, 560, initialFuelLevelTwo);
+				playerTwo = new PlayerEntity(this, "sprites/blankPlayer.gif", 1040, 560, initialFuelLevelTwo);
 
 				// create goal location for each player
 				goalOne = new GoalEntity("sprites/blankPlayer.gif", 1230, 650, playerOne);
