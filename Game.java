@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Game extends Canvas {
 
 	private BufferStrategy strategy; // take advantage of accelerated graphics
-	private boolean waitingForKeyPress = true; // true if game held up until
+	private boolean waitingForKeyPress = false; // true if game held up until
 
 	private final int GAME_WIDTH = 1280; // width of game
 	private final int GAME_HEIGHT = 720; // height of game
@@ -33,7 +33,7 @@ public class Game extends Canvas {
 	private boolean levelCleared = false; // whether or not the level has been cleared
 	private boolean playerOneCleared = false; // whether or not playerOne has cleared the level
 	private boolean playerTwoCleared = false; // whether or not playerTwo has cleared the level
-	private int currentLevel = 10; // the current level
+	private int currentLevel = 11; // the current level
 	private String background = ""; // the image to grab from sprite store to display as the background
 	private ArrayList entities = new ArrayList(); // list of entities currently in game
 	private ArrayList removeEntities = new ArrayList(); // list of entities to remove this loop
@@ -177,6 +177,12 @@ public class Game extends Canvas {
 				initialFuelLevelTwo = 45;
 				background = "sprites/BackgroundTwo.png";
 				break;
+			case 11:
+				background = "sprites/BackgroundTwo.png";
+				break;
+			default:
+				background = "sprites/BackgroundTwo.png";
+				break;
 		}
 
 		// initEntites for the level and start it
@@ -301,15 +307,18 @@ public class Game extends Canvas {
 				entity.draw(g);
 			} // for
 
-			// draw fuel tank for p1
-			g.setColor(Color.green);
-			(SpriteStore.get()).getSprite("sprites/P1JetPackBar.png").draw(g, 5, 10);
-			g.fillRect(53, 20, (int) ((101 - (int) ((((PlayerEntity) playerOne).getFuelLevel() / initialFuelLevelOne) * 100)) * 1.42), 20);
+			// only draw fuel tanks if there are players
+			if(!(currentLevel == 0 || currentLevel == 11)){
+				// draw fuel tank for p1
+				g.setColor(Color.green);
+				(SpriteStore.get()).getSprite("sprites/P1JetPackBar.png").draw(g, 5, 10);
+				g.fillRect(53, 20, (int) ((101 - (int) ((((PlayerEntity) playerOne).getFuelLevel() / initialFuelLevelOne) * 100)) * 1.42), 20);
 
-			// draw fuel tank for p2
-			g.setColor(Color.pink);
-			(SpriteStore.get()).getSprite("sprites/P2JetPackBar.png").draw(g, 1075, 10);
-			g.fillRect(1085, 20, (int) ((101 - (int) ((((PlayerEntity) playerTwo).getFuelLevel() / initialFuelLevelTwo) * 100)) * 1.42), 20);
+				// draw fuel tank for p2
+				g.setColor(Color.pink);
+				(SpriteStore.get()).getSprite("sprites/P2JetPackBar.png").draw(g, 1075, 10);
+				g.fillRect(1085, 20, (int) ((101 - (int) ((((PlayerEntity) playerTwo).getFuelLevel() / initialFuelLevelTwo) * 100)) * 1.42), 20);
+			}
 
 			// brute force collisions, compare every entity against every other entity. If any collisions are detected notify both entities that it has occurred
 			for (int i = 0; i < entities.size(); i++) {
@@ -372,82 +381,88 @@ public class Game extends Canvas {
 			g.dispose();
 			strategy.show();
 
-			// store potential collsions for player character
-			playerOneCollisions = playerOne.willCollideWithSomething(entities);
-			playerTwoCollisions = playerTwo.willCollideWithSomething(entities);
+			// only do player related code if there are players
+			if(!(currentLevel == 0 || currentLevel == 11)){
+				// store potential collsions for player character
+				playerOneCollisions = playerOne.willCollideWithSomething(entities);
+				playerTwoCollisions = playerTwo.willCollideWithSomething(entities);
 
-			// intial movement logic for playerOne
-			playerOne.setHorizontalMovement(0);
-			if(playerOneCollisions.contains("bottom") && !(playerOneCollisions.contains("top"))){
-				((PlayerEntity) playerOne).setFuelLevel(initialFuelLevelOne);
-				playerOne.setVerticalMovement(0);
-			} else {
-				playerOne.setVerticalMovement(gravity); // gravity must be equal to jump speed
-			}
+				// intial movement logic for playerOne
+				playerOne.setHorizontalMovement(0);
+				if(playerOneCollisions.contains("bottom") && !(playerOneCollisions.contains("top"))){
+					((PlayerEntity) playerOne).setFuelLevel(initialFuelLevelOne);
+					playerOne.setVerticalMovement(0);
+				} else {
+					playerOne.setVerticalMovement(gravity); // gravity must be equal to jump speed
+				}
 
-			// initial movement logic for playerTwo
-			playerTwo.setHorizontalMovement(0);
-			if(playerTwoCollisions.contains("bottom") && !(playerTwoCollisions.contains("top"))){
-				((PlayerEntity) playerTwo).setFuelLevel(initialFuelLevelTwo);
-				playerTwo.setVerticalMovement(0);
-			} else {
-				playerTwo.setVerticalMovement(gravity); // gravity must be equal to jump speed
-			}
+				// initial movement logic for playerTwo
+				playerTwo.setHorizontalMovement(0);
+				if(playerTwoCollisions.contains("bottom") && !(playerTwoCollisions.contains("top"))){
+					((PlayerEntity) playerTwo).setFuelLevel(initialFuelLevelTwo);
+					playerTwo.setVerticalMovement(0);
+				} else {
+					playerTwo.setVerticalMovement(gravity); // gravity must be equal to jump speed
+				}
 
-			// respond to playerOne moving character
-			if ((leftPressedOne) && (!rightPressedOne) && !(playerOneCollisions.contains("left"))) {
-				playerOne.setHorizontalMovement(-moveSpeed);
-				if(upPressedOne){
-					playerOne.setSprite("sprites/PlayerOneJumpLeft.png");
-				} else {
-					playerOne.setSprite("sprites/PlayerOneLeft.png");
+				// respond to playerOne moving character
+				if ((leftPressedOne) && (!rightPressedOne) && !(playerOneCollisions.contains("left"))) {
+					playerOne.setHorizontalMovement(-moveSpeed);
+					if(upPressedOne){
+						playerOne.setSprite("sprites/PlayerOneJumpLeft.png");
+					} else {
+						playerOne.setSprite("sprites/PlayerOneLeft.png");
+					}
+				} else if ((rightPressedOne) && (!leftPressedOne) && !(playerOneCollisions.contains("right"))) {
+					playerOne.setHorizontalMovement(moveSpeed);
+					if(upPressedOne){
+						playerOne.setSprite("sprites/PlayerOneJumpRight.png");
+					} else {
+						playerOne.setSprite("sprites/PlayerOneRight.png");
+					}
+				} else if ((!rightPressedOne) && (!leftPressedOne)) {
+					if(upPressedOne){
+						playerOne.setSprite("sprites/PlayerOneJumpForward.png");
+					} else {
+						playerOne.setSprite("sprites/PlayerOneForward.png");
+					}
 				}
-			} else if ((rightPressedOne) && (!leftPressedOne) && !(playerOneCollisions.contains("right"))) {
-				playerOne.setHorizontalMovement(moveSpeed);
-				if(upPressedOne){
-					playerOne.setSprite("sprites/PlayerOneJumpRight.png");
-				} else {
-					playerOne.setSprite("sprites/PlayerOneRight.png");
-				}
-			} else if ((!rightPressedOne) && (!leftPressedOne)) {
-				if(upPressedOne){
-					playerOne.setSprite("sprites/PlayerOneJumpForward.png");
-				} else {
-					playerOne.setSprite("sprites/PlayerOneForward.png");
-				}
-			}
 
-			// respond to playerTwo moving character
-			if ((leftPressedTwo) && (!rightPressedTwo) && !(playerTwoCollisions.contains("left"))) {
-				playerTwo.setHorizontalMovement(-moveSpeed);
-				if(upPressedTwo){
-					playerTwo.setSprite("sprites/PlayerTwoJumpLeft.png");
-				} else {
-					playerTwo.setSprite("sprites/PlayerTwoLeft.png");
+				// respond to playerTwo moving character
+				if ((leftPressedTwo) && (!rightPressedTwo) && !(playerTwoCollisions.contains("left"))) {
+					playerTwo.setHorizontalMovement(-moveSpeed);
+					if(upPressedTwo){
+						playerTwo.setSprite("sprites/PlayerTwoJumpLeft.png");
+					} else {
+						playerTwo.setSprite("sprites/PlayerTwoLeft.png");
+					}
+				} else if ((rightPressedTwo) && (!leftPressedTwo) && !(playerTwoCollisions.contains("right"))) {
+					playerTwo.setHorizontalMovement(moveSpeed);
+					if(upPressedTwo){
+						playerTwo.setSprite("sprites/PlayerTwoJumpRight.png");
+					} else {
+						playerTwo.setSprite("sprites/PlayerTwoRight.png");
+					}
+				} else if ((!rightPressedTwo) && (!leftPressedTwo)) {
+					if(upPressedTwo){
+						playerTwo.setSprite("sprites/PlayerTwoJumpForward.png");
+					} else {
+						playerTwo.setSprite("sprites/PlayerTwoForward.png");
+					}
 				}
-			} else if ((rightPressedTwo) && (!leftPressedTwo) && !(playerTwoCollisions.contains("right"))) {
-				playerTwo.setHorizontalMovement(moveSpeed);
-				if(upPressedTwo){
-					playerTwo.setSprite("sprites/PlayerTwoJumpRight.png");
-				} else {
-					playerTwo.setSprite("sprites/PlayerTwoRight.png");
-				}
-			} else if ((!rightPressedTwo) && (!leftPressedTwo)) {
-				if(upPressedTwo){
-					playerTwo.setSprite("sprites/PlayerTwoJumpForward.png");
-				} else {
-					playerTwo.setSprite("sprites/PlayerTwoForward.png");
-				}
-			}
 
-			// if up arrow pressed try to jump
-			if (upPressedOne) {
-				tryToJump(playerOne, playerOneCollisions);
-			}
+				// if up arrow pressed try to jump
+				if (upPressedOne) {
+					tryToJump(playerOne, playerOneCollisions);
+				}
 
-			if (upPressedTwo) {
-				tryToJump(playerTwo, playerTwoCollisions);
-			}
+				if (upPressedTwo) {
+					tryToJump(playerTwo, playerTwoCollisions);
+				}
+			} // if
+
+
+			
 
 			// set delays so the game runs at 60fps
 			try {
@@ -562,6 +577,15 @@ public class Game extends Canvas {
 			if (e.getKeyChar() == 27) {
 				System.exit(0);
 			} // if escape pressed
+
+			if (e.getKeyChar() == 32 && (currentLevel == 0 || currentLevel == 11)) {
+				levelCleared = true;
+				levelRunning = false;
+				if(currentLevel == 11){
+					currentLevel = -1;
+				}
+				
+			}
 
 		} // keyTyped
 
