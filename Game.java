@@ -579,7 +579,7 @@ public class Game extends Canvas {
 		public void keyTyped(KeyEvent e) {
 			// if waiting for key press to start game
 			if (waitingForKeyPress) {
-				if (pressCount == 1) {
+				if (pressCount >= 1) {
 					waitingForKeyPress = false;
 					startGame();
 					pressCount = 1;
