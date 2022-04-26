@@ -162,13 +162,13 @@ public class Game extends Canvas {
 				background = "sprites/BackgroundOne.png";
 				break;
 			case 6:
-				initialFuelLevelOne = 50;
-				initialFuelLevelTwo = 50;
+				initialFuelLevelOne = 45;
+				initialFuelLevelTwo = 45;
 				background = "sprites/BackgroundOne.png";
 				break;
 			case 7:
 				initialFuelLevelOne = 50;
-				initialFuelLevelTwo = 45;
+				initialFuelLevelTwo = 50;
 				background = "sprites/BackgroundOne.png";
 				break;
 			case 8:
