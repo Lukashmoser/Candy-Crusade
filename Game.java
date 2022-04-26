@@ -4,11 +4,20 @@
  *
  */
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class Game extends Canvas {
 
@@ -130,52 +139,52 @@ public class Game extends Canvas {
 			case 1:
 				initialFuelLevelOne = 50;
 				initialFuelLevelTwo = 50;
-				background = "sprites/backgroundOne.png";
+				background = "sprites/BackgroundOne.png";
 				break;
 			case 2:
 				initialFuelLevelOne = 50;
 				initialFuelLevelTwo = 50;
-				background = "sprites/backgroundOne.png";
+				background = "sprites/BackgroundOne.png";
 				break;
 			case 3:
 				initialFuelLevelOne = 50;
 				initialFuelLevelTwo = 50;
-				background = "sprites/backgroundOne.png";
+				background = "sprites/BackgroundOne.png";
 				break;
 			case 4:
 				initialFuelLevelOne = 50;
 				initialFuelLevelTwo = 50;
-				background = "sprites/backgroundOne.png";
+				background = "sprites/BackgroundOne.png";
 				break;
 			case 5:
 				initialFuelLevelOne = 50;
 				initialFuelLevelTwo = 50;
-				background = "sprites/backgroundOne.png";
+				background = "sprites/BackgroundOne.png";
 				break;
 			case 6:
 				initialFuelLevelOne = 50;
 				initialFuelLevelTwo = 50;
-				background = "sprites/backgroundOne.png";
+				background = "sprites/BackgroundOne.png";
 				break;
 			case 7:
 				initialFuelLevelOne = 50;
 				initialFuelLevelTwo = 45;
-				background = "sprites/backgroundOne.png";
+				background = "sprites/BackgroundOne.png";
 				break;
 			case 8:
 				initialFuelLevelOne = 50;
 				initialFuelLevelTwo = 50;
-				background = "sprites/backgroundOne.png";
+				background = "sprites/BackgroundOne.png";
 				break;
 			case 9:
 				initialFuelLevelOne = 50;
 				initialFuelLevelTwo = 50;
-				background = "sprites/backgroundOne.png";
+				background = "sprites/BackgroundOne.png";
 				break;
 			case 10:
 				initialFuelLevelOne = 45;
 				initialFuelLevelTwo = 45;
-				background = "sprites/backgroundOne.png";
+				background = "sprites/BackgroundOne.png";
 				break;
 			case 11:
 				background = "sprites/endingScreen.png";
@@ -591,7 +600,6 @@ public class Game extends Canvas {
 				if(currentLevel == 11){
 					currentLevel = -1;
 				}
-				
 			}
 
 		} // keyTyped
@@ -725,7 +733,7 @@ public class Game extends Canvas {
 				goalTwo = new GoalEntity("sprites/playerTwoExit.png", 80, 360, playerTwo);
 				
 				for (int i = 0; i < 640; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png ", i, 160));
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 160));
 				} // W
 				for (int i = 200; i < 520; i += 40){
 					entities.add(new TileEntity(this, "sprites/chocolate.png", 600, i));
