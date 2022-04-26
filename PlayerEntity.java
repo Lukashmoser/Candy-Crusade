@@ -31,7 +31,7 @@ public class PlayerEntity extends Entity {
 		} // if
 		
 		// stop at right side of screen
-		if ((dx > 0) && (x > 1240)) {
+		if ((dx > 0) && (x > 1216)) {
 			this.setHorizontalMovement(0);
 		} // if
 

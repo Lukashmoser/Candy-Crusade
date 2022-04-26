@@ -33,7 +33,7 @@ public class Game extends Canvas {
 	private boolean levelCleared = false; // whether or not the level has been cleared
 	private boolean playerOneCleared = false; // whether or not playerOne has cleared the level
 	private boolean playerTwoCleared = false; // whether or not playerTwo has cleared the level
-	private int currentLevel = 11; // the current level
+	private int currentLevel = 10; // the current level
 	private String background = ""; // the image to grab from sprite store to display as the background
 	private ArrayList entities = new ArrayList(); // list of entities currently in game
 	private ArrayList removeEntities = new ArrayList(); // list of entities to remove this loop
@@ -53,7 +53,7 @@ public class Game extends Canvas {
 	private Entity buttonOne; // a button that will be on the screen only if required
 	private Entity buttonTwo; // another button that will be on the screen only if required
 
-	
+	private Font stringFont = new Font( "Unispace", Font.BOLD, 30);
 	private String message = ""; // message to display while waiting for a key press
 
 	/*
@@ -61,7 +61,7 @@ public class Game extends Canvas {
 	 */
 	public Game() {
 		// create a frame to contain game
-		JFrame container = new JFrame("Super Candroid Siblings");
+		JFrame container = new JFrame("Candy Crusade");
 
 		// get hold the content of the frame
 		JPanel panel = (JPanel) container.getContentPane();
@@ -128,60 +128,60 @@ public class Game extends Canvas {
 		// set varibles that can change with each level
 		switch(level){
 			case 1:
-				initialFuelLevelOne = 45;
-				initialFuelLevelTwo = 45;
-				background = "sprites/BackgroundTwo.png";
+				initialFuelLevelOne = 50;
+				initialFuelLevelTwo = 50;
+				background = "sprites/backgroundOne.png";
 				break;
 			case 2:
-				initialFuelLevelOne = 45;
-				initialFuelLevelTwo = 45;
-				background = "sprites/BackgroundTwo.png";
+				initialFuelLevelOne = 50;
+				initialFuelLevelTwo = 50;
+				background = "sprites/backgroundOne.png";
 				break;
 			case 3:
-				initialFuelLevelOne = 45;
-				initialFuelLevelTwo = 45;
-				background = "sprites/BackgroundTwo.png";
+				initialFuelLevelOne = 50;
+				initialFuelLevelTwo = 50;
+				background = "sprites/backgroundOne.png";
 				break;
 			case 4:
-				initialFuelLevelOne = 45;
-				initialFuelLevelTwo = 45;
-				background = "sprites/BackgroundTwo.png";
+				initialFuelLevelOne = 50;
+				initialFuelLevelTwo = 50;
+				background = "sprites/backgroundOne.png";
 				break;
 			case 5:
-				initialFuelLevelOne = 45;
-				initialFuelLevelTwo = 45;
-				background = "sprites/BackgroundTwo.png";
+				initialFuelLevelOne = 50;
+				initialFuelLevelTwo = 50;
+				background = "sprites/backgroundOne.png";
 				break;
 			case 6:
-				initialFuelLevelOne = 45;
-				initialFuelLevelTwo = 45;
-				background = "sprites/BackgroundTwo.png";
+				initialFuelLevelOne = 50;
+				initialFuelLevelTwo = 50;
+				background = "sprites/backgroundOne.png";
 				break;
 			case 7:
-				initialFuelLevelOne = 45;
+				initialFuelLevelOne = 50;
 				initialFuelLevelTwo = 45;
-				background = "sprites/BackgroundTwo.png";
+				background = "sprites/backgroundOne.png";
 				break;
 			case 8:
-				initialFuelLevelOne = 45;
-				initialFuelLevelTwo = 45;
-				background = "sprites/BackgroundTwo.png";
+				initialFuelLevelOne = 50;
+				initialFuelLevelTwo = 50;
+				background = "sprites/backgroundOne.png";
 				break;
 			case 9:
-				initialFuelLevelOne = 45;
-				initialFuelLevelTwo = 45;
-				background = "sprites/BackgroundTwo.png";
+				initialFuelLevelOne = 50;
+				initialFuelLevelTwo = 50;
+				background = "sprites/backgroundOne.png";
 				break;
 			case 10:
 				initialFuelLevelOne = 45;
 				initialFuelLevelTwo = 45;
-				background = "sprites/BackgroundTwo.png";
+				background = "sprites/backgroundOne.png";
 				break;
 			case 11:
-				background = "sprites/BackgroundTwo.png";
+				background = "sprites/endingScreen.png";
 				break;
 			default:
-				background = "sprites/BackgroundTwo.png";
+				background = "sprites/beginningScreen.png";
 				break;
 		}
 
@@ -311,12 +311,12 @@ public class Game extends Canvas {
 			if(!(currentLevel == 0 || currentLevel == 11)){
 				// draw fuel tank for p1
 				g.setColor(Color.green);
-				(SpriteStore.get()).getSprite("sprites/P1JetPackBar.png").draw(g, 5, 10);
+				(SpriteStore.get()).getSprite("sprites/jetPackBarP1.png").draw(g, 5, 10);
 				g.fillRect(53, 20, (int) ((101 - (int) ((((PlayerEntity) playerOne).getFuelLevel() / initialFuelLevelOne) * 100)) * 1.42), 20);
 
 				// draw fuel tank for p2
 				g.setColor(Color.pink);
-				(SpriteStore.get()).getSprite("sprites/P2JetPackBar.png").draw(g, 1075, 10);
+				(SpriteStore.get()).getSprite("sprites/jetPackBarP2.png").draw(g, 1075, 10);
 				g.fillRect(1085, 20, (int) ((101 - (int) ((((PlayerEntity) playerTwo).getFuelLevel() / initialFuelLevelTwo) * 100)) * 1.42), 20);
 			}
 
@@ -373,8 +373,14 @@ public class Game extends Canvas {
 			// if waiting for "any key press", draw message
 			if (waitingForKeyPress) {
 				g.setColor(Color.white);
+				g.fillRoundRect(490, 255, 300, 140, 25, 25);
+				g.setColor(new Color(57, 181, 74));
+				g.fillRoundRect(500, 265, 280, 120, 20, 20);
+				g.setColor(Color.white);
+				g.setFont(stringFont);
 				g.drawString(message, (GAME_WIDTH - g.getFontMetrics().stringWidth(message)) / 2, GAME_HEIGHT / 2 - 50);
 				g.drawString("Press any key", (GAME_WIDTH - g.getFontMetrics().stringWidth("Press any key")) / 2, GAME_HEIGHT / 2);
+				
 			} // if
 
 			// clear graphics and flip buffer
@@ -409,22 +415,22 @@ public class Game extends Canvas {
 				if ((leftPressedOne) && (!rightPressedOne) && !(playerOneCollisions.contains("left"))) {
 					playerOne.setHorizontalMovement(-moveSpeed);
 					if(upPressedOne){
-						playerOne.setSprite("sprites/PlayerOneJumpLeft.png");
+						playerOne.setSprite("sprites/P1JL.png");
 					} else {
-						playerOne.setSprite("sprites/PlayerOneLeft.png");
+						playerOne.setSprite("sprites/P1L.png");
 					}
 				} else if ((rightPressedOne) && (!leftPressedOne) && !(playerOneCollisions.contains("right"))) {
 					playerOne.setHorizontalMovement(moveSpeed);
 					if(upPressedOne){
-						playerOne.setSprite("sprites/PlayerOneJumpRight.png");
+						playerOne.setSprite("sprites/P1JR.png");
 					} else {
-						playerOne.setSprite("sprites/PlayerOneRight.png");
+						playerOne.setSprite("sprites/P1R.png");
 					}
 				} else if ((!rightPressedOne) && (!leftPressedOne)) {
 					if(upPressedOne){
-						playerOne.setSprite("sprites/PlayerOneJumpForward.png");
+						playerOne.setSprite("sprites/P1JF.png");
 					} else {
-						playerOne.setSprite("sprites/PlayerOneForward.png");
+						playerOne.setSprite("sprites/P1F.png");
 					}
 				}
 
@@ -432,22 +438,22 @@ public class Game extends Canvas {
 				if ((leftPressedTwo) && (!rightPressedTwo) && !(playerTwoCollisions.contains("left"))) {
 					playerTwo.setHorizontalMovement(-moveSpeed);
 					if(upPressedTwo){
-						playerTwo.setSprite("sprites/PlayerTwoJumpLeft.png");
+						playerTwo.setSprite("sprites/P2JL.png");
 					} else {
-						playerTwo.setSprite("sprites/PlayerTwoLeft.png");
+						playerTwo.setSprite("sprites/P2L.png");
 					}
 				} else if ((rightPressedTwo) && (!leftPressedTwo) && !(playerTwoCollisions.contains("right"))) {
 					playerTwo.setHorizontalMovement(moveSpeed);
 					if(upPressedTwo){
-						playerTwo.setSprite("sprites/PlayerTwoJumpRight.png");
+						playerTwo.setSprite("sprites/P2JR.png");
 					} else {
-						playerTwo.setSprite("sprites/PlayerTwoRight.png");
+						playerTwo.setSprite("sprites/P2R.png");  
 					}
 				} else if ((!rightPressedTwo) && (!leftPressedTwo)) {
 					if(upPressedTwo){
-						playerTwo.setSprite("sprites/PlayerTwoJumpForward.png");
+						playerTwo.setSprite("sprites/P2JF.png");
 					} else {
-						playerTwo.setSprite("sprites/PlayerTwoForward.png");
+						playerTwo.setSprite("sprites/P2F.png");
 					}
 				}
 
@@ -578,6 +584,7 @@ public class Game extends Canvas {
 				System.exit(0);
 			} // if escape pressed
 
+			// allows the user to continue to the next screen
 			if (e.getKeyChar() == 32 && (currentLevel == 0 || currentLevel == 11)) {
 				levelCleared = true;
 				levelRunning = false;
@@ -595,97 +602,13 @@ public class Game extends Canvas {
 	private void initEntities(int level) {
 		switch(level){
 			case 1:
-				playerOne = new PlayerEntity(this, "sprites/BaseFrontCharacter.png", 0, 0, initialFuelLevelOne);
-				playerTwo = new PlayerEntity(this, "sprites/blankPlayer.gif", 0, 80, initialFuelLevelTwo);
-				
-				goalOne = new GoalEntity("sprites/blankPlayer.gif", 0, 280, playerOne);
-				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 80, 280, playerTwo);
-				
-				for (int i = 0; i < 640; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 160));
-				} // W
-				for (int i = 200; i < 520; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", 600, i));
-				} // W
-				for (int i = 640; i < 1160; i += 40){
-				entities.add(new TileEntity(this, "sprites/chocolate.png", i, 480));
-				} // W
-				for (int i = 320; i < 520; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, i));
-				} // W
-				
-				for (int i = 640; i < 760; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 320));
-				} // W
-				
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 880, 320));
-				entities.add(new TileEntity(this, "sprites/chocolate.png", 920, 320));
-				
-				for (int i = 1080; i < 1160; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 320));
-				} // W
-				
-				for (int i = 640; i < 1160; i += 40){
-					entities.add(new DeathEntity("sprites/death.png", i, 440, this));
-				} // W
-				
-				for (int i = 640; i < 720; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", 0, i));
-				} // W
-				
-				for (int i = 40; i < 400; i += 40){
-					entities.add(new DeathEntity("sprites/death.png", i, 680, this));
-				} // W
-				
-				for (int i = 640; i < 720; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", 400, i));
-				} // W
-				
-				for (int i = 440; i < 1280; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 680));
-				} // W
-				
-				for (int i = 0; i < 120; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 440));
-				} // W
-				
-				for (int i = 200; i < 280; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 440));
-				} // W
-				for (int i = 360; i < 440; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 480));
-				} // W
-				for (int i = 1200; i < 1280; i += 40){
-					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 640));
-				} // W
-				
-				entities.add(new MovableBlockEntity("sprites/box.png", 840, 600, this));
-				
-				door = new DeathEntity("sprites/door.png", 1200, 320, this);
-
-				buttonOne = new ButtonEntity(this, "sprites/button.png", 480, 141, door);
-				buttonTwo = new ButtonEntity(this, "sprites/button.png", 1200, 621, door, buttonOne);
-
-				((ButtonEntity) buttonOne).setSecondButton(buttonTwo);
-				
-				entities.add(buttonOne);
-				entities.add(buttonTwo);
-				entities.add(door);
-
-				entities.add(goalOne);
-				entities.add(goalTwo);
-				
-				entities.add(playerOne);
-				entities.add(playerTwo);
-				break;
-			case 2:
 				// create players and and put in correct location
-				playerOne = new PlayerEntity(this, "sprites/PlayerOneForward.png", 20, 560, initialFuelLevelOne);
-				playerTwo = new PlayerEntity(this, "sprites/PlayerTwoForward.png", 1180, 60, initialFuelLevelTwo);
+				playerOne = new PlayerEntity(this, "sprites/P1F.png", 20, 560, initialFuelLevelOne);
+				playerTwo = new PlayerEntity(this, "sprites/P2F.png", 1180, 60, initialFuelLevelTwo);
 
 				// create goal location for each player
-				goalOne = new GoalEntity("sprites/blankPlayer.gif", 1120, 120, playerOne);
-				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 120, 600, playerTwo);
+				goalOne = new GoalEntity("sprites/playerOneExit.png", 1120, 120, playerOne);
+				goalTwo = new GoalEntity("sprites/playerTwoExit.png", 120, 600, playerTwo);
 
 				// bottom floor
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 0, 680));
@@ -793,14 +716,99 @@ public class Game extends Canvas {
 				entities.add(playerOne);
 				entities.add(playerTwo);
 				break;
+				
+			case 2:
+				playerOne = new PlayerEntity(this, "sprites/P1F.png", 0, 0, initialFuelLevelOne);
+				playerTwo = new PlayerEntity(this, "sprites/P2F.png", 0, 80, initialFuelLevelTwo);
+				
+				goalOne = new GoalEntity("sprites/playerOneExit.png", 0, 360, playerOne);
+				goalTwo = new GoalEntity("sprites/playerTwoExit.png", 80, 360, playerTwo);
+				
+				for (int i = 0; i < 640; i += 40){
+					entities.add(new TileEntity(this, "sprites/chocolate.png ", i, 160));
+				} // W
+				for (int i = 200; i < 520; i += 40){
+					entities.add(new TileEntity(this, "sprites/chocolate.png", 600, i));
+				} // W
+				for (int i = 640; i < 1160; i += 40){
+				entities.add(new TileEntity(this, "sprites/chocolate.png", i, 480));
+				} // W
+				for (int i = 320; i < 520; i += 40){
+					entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, i));
+				} // W
+				
+				for (int i = 640; i < 760; i += 40){
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 320));
+				} // W
+				
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 880, 320));
+				entities.add(new TileEntity(this, "sprites/chocolate.png", 920, 320));
+				
+				for (int i = 1080; i < 1160; i += 40){
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 320));
+				} // W
+				
+				for (int i = 640; i < 1160; i += 40){
+					entities.add(new DeathEntity("sprites/slime.png", i, 440, this));
+				} // W
+				
+				for (int i = 640; i < 720; i += 40){
+					entities.add(new TileEntity(this, "sprites/chocolate.png", 0, i));
+				} // W
+				
+				for (int i = 40; i < 400; i += 40){
+					entities.add(new DeathEntity("sprites/slime.png", i, 680, this));
+				} // W
+				
+				for (int i = 640; i < 720; i += 40){
+					entities.add(new TileEntity(this, "sprites/chocolate.png", 400, i));
+				} // W
+				
+				for (int i = 440; i < 1280; i += 40){
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 680));
+				} // W
+				
+				for (int i = 0; i < 120; i += 40){
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 440));
+				} // W
+				
+				for (int i = 200; i < 280; i += 40){
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 440));
+				} // W
+				for (int i = 360; i < 440; i += 40){
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 480));
+				} // W
+				for (int i = 1200; i < 1280; i += 40){
+					entities.add(new TileEntity(this, "sprites/chocolate.png", i, 640));
+				} // W
+				
+				entities.add(new MovableBlockEntity("sprites/box.png", 840, 600, this));
+				
+				door = new DeathEntity("sprites/doorHorizontal.png", 1200, 320, this);
+
+				buttonOne = new ButtonEntity(this, "sprites/button.png", 480, 141, door);
+				buttonTwo = new ButtonEntity(this, "sprites/button.png", 1200, 621, door, buttonOne);
+
+				((ButtonEntity) buttonOne).setSecondButton(buttonTwo);
+				
+				entities.add(buttonOne);
+				entities.add(buttonTwo);
+				entities.add(door);
+
+				entities.add(goalOne);
+				entities.add(goalTwo);
+				
+				entities.add(playerOne);
+				entities.add(playerTwo);
+				break;
 			case 3:
 				// create players and and put in correct location
-				playerOne = new PlayerEntity(this, "sprites/blankPlayer.gif", 160, 560, initialFuelLevelOne);
-				playerTwo = new PlayerEntity(this, "sprites/blankPlayer.gif", 1040, 560, initialFuelLevelTwo);
+				playerOne = new PlayerEntity(this, "sprites/P1F.png", 160, 560, initialFuelLevelOne);
+				playerTwo = new PlayerEntity(this, "sprites/P2F.png", 1040, 560, initialFuelLevelTwo);
 
 				// create goal location for each player
-				goalOne = new GoalEntity("sprites/blankPlayer.gif", 1230, 650, playerOne);
-				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 10, 650, playerTwo);
+				goalOne = new GoalEntity("sprites/playerOneExit.png", 1230, 600, playerOne);
+				goalTwo = new GoalEntity("sprites/playerTwoExit.png", 10, 600, playerTwo);
 
 				//bottom left floor
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 0, 680));
@@ -816,16 +824,16 @@ public class Game extends Canvas {
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 400, 680));
 
 				// bottom middle death tiles
-				entities.add(new DeathEntity("sprites/death.png", 440, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 480, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 520, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 560, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 600, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 640, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 680, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 720, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 760, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 800, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 440, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 480, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 520, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 560, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 600, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 640, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 680, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 720, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 760, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 800, 680, this));
 
 				// bottom right floor
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 840, 680));
@@ -965,12 +973,12 @@ public class Game extends Canvas {
 				break;
 			case 4:
 				// create players and and put in correct location
-				playerOne = new PlayerEntity(this, "sprites/PlayerOneForward.png", 120, 60, initialFuelLevelOne);
-				playerTwo = new PlayerEntity(this, "sprites/PlayerTwoForward.png", 40, 60, initialFuelLevelTwo);
+				playerOne = new PlayerEntity(this, "sprites/P1F.png", 120, 60, initialFuelLevelOne);
+				playerTwo = new PlayerEntity(this, "sprites/P2F.png", 40, 60, initialFuelLevelTwo);
 
 				// create goal location for each player
-				goalOne = new GoalEntity("sprites/blankPlayer.gif", 300, 400, playerOne);
-				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 300, 600, playerTwo);
+				goalOne = new GoalEntity("sprites/playerOneExit.png", 300, 400, playerOne);
+				goalTwo = new GoalEntity("sprites/playerTwoExit.png", 300, 600, playerTwo);
 
 				// bottom floor
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 0, 680));
@@ -1037,15 +1045,15 @@ public class Game extends Canvas {
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 1080, 320));
 
 				// top left shooters
-				entities.add(new ShotGeneratorEntity(this, "sprites/door.png", 240, -400, "sprites/box.png", 160, 3000, 'd'));
-				entities.add(new ShotGeneratorEntity(this, "sprites/door.png", 320, -400, "sprites/box.png", 120, 3000, 'd'));
-				entities.add(new ShotGeneratorEntity(this, "sprites/door.png", 400, -400, "sprites/box.png", 80, 3000, 'd'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterRight.png", 240, -400, "sprites/enemyCandyOne.png", 160, 3000, 'd'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterRight.png", 320, -400, "sprites/enemyCandyTwo.png", 120, 3000, 'd'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterRight.png", 400, -400, "sprites/enemyCandyTwo.png", 80, 3000, 'd'));
 
 				// top right shooter
-				entities.add(new ShotGeneratorEntity(this, "sprites/door.png", 520, -400, "sprites/box.png", 200, 3000, 'd'));
-				entities.add(new ShotGeneratorEntity(this, "sprites/door.png", 600, -400, "sprites/box.png", 160, 3000, 'd'));
-				entities.add(new ShotGeneratorEntity(this, "sprites/door.png", 680, -400, "sprites/box.png", 120, 3000, 'd'));
-				entities.add(new ShotGeneratorEntity(this, "sprites/door.png", 760, -400, "sprites/box.png", 80, 3000, 'd'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterRight.png", 520, -400, "sprites/enemyCandyOne.png", 200, 3000, 'd'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterRight.png", 600, -400, "sprites/enemyCandyTwo.png", 160, 3000, 'd'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterRight.png", 680, -400, "sprites/enemyCandyOne.png", 120, 3000, 'd'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterRight.png", 760, -400, "sprites/enemyCandyOne.png", 80, 3000, 'd'));
 
 				// double thick platform
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 0, 480));
@@ -1114,8 +1122,8 @@ public class Game extends Canvas {
 				entities.add(new MovableBlockEntity("sprites/box.png", 1040, 400, this));
 
 				// shot generators
-				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 0, 400, "sprites/tempBullet.png", 500, 500, 'r'));
-				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 0, 600, "sprites/tempBullet.png", 500, 500, 'r'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterRight.png", 0, 400, "sprites/bulletRight.png", 500, 500, 'r'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterRight.png", 0, 600, "sprites/bulletRight.png", 500, 500, 'r'));
 
 				// players and goals
 				entities.add(goalOne);
@@ -1126,12 +1134,12 @@ public class Game extends Canvas {
 				break;
 			case 5:
 				// create players and and put in correct location
-				playerOne = new PlayerEntity(this, "sprites/PlayerOneForward.png", 85, 100, initialFuelLevelOne);
-				playerTwo = new PlayerEntity(this, "sprites/PlayerTwoForward.png", 460, 100, initialFuelLevelTwo);
+				playerOne = new PlayerEntity(this, "sprites/P1F.png", 85, 100, initialFuelLevelOne);
+				playerTwo = new PlayerEntity(this, "sprites/P2F.png", 460, 100, initialFuelLevelTwo);
 
 				// create goal location for each player
-				goalOne = new GoalEntity("sprites/blankPlayer.gif", 10, 240, playerOne);
-				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 20, 600, playerTwo);
+				goalOne = new GoalEntity("sprites/playerOneExit.png", 10, 240, playerOne);
+				goalTwo = new GoalEntity("sprites/playerTwoExit.png", 20, 600, playerTwo);
 
 				// floor
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 0, 680));
@@ -1324,49 +1332,49 @@ public class Game extends Canvas {
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 200, 640));
 
 				// button 1 and door 1
-				door = new DeathEntity("sprites/box.png", 80, 480, this);
+				door = new DeathEntity("sprites/doorVertical.png", 80, 480, this);
 				entities.add(door);
 
 				entities.add(new ButtonEntity(this, "sprites/button.png", 0, 61, door));
 
 				// button 2 and door 2
-				door = new DeathEntity("sprites/box.png", 880, 240, this);
+				door = new DeathEntity("sprites/doorVertical.png", 880, 240, this);
 				entities.add(door);
 
 				entities.add(new ButtonEntity(this, "sprites/button.png", 160, 61, door));
 
 				// button 3 and door 3
-				door = new DeathEntity("sprites/box.png", 1200, 200, this);
+				door = new DeathEntity("sprites/doorHorizontal.png", 1200, 200, this);
 				entities.add(door);
 
 				entities.add(new ButtonEntity(this, "sprites/button.png", 320, 61, door));
 
 				// button 4 and door 4
-				door = new DeathEntity("sprites/box.png", 800, 520, this);
+				door = new DeathEntity("sprites/doorHorizontal.png", 800, 520, this);
 				entities.add(door);
 
 				entities.add(new ButtonEntity(this, "sprites/button.png", 160, 181, door));
 
 				// button 5 and door 5
-				door = new DeathEntity("sprites/box.png", 440, 520, this);
+				door = new DeathEntity("sprites/doorHorizontal.png", 440, 520, this);
 				entities.add(door);
 
 				entities.add(new ButtonEntity(this, "sprites/button.png", 320, 181, door));
 
 				// button 6 and door 6
-				door = new DeathEntity("sprites/door.png", 0, 200, this);
+				door = new DeathEntity("sprites/doorHorizontal.png", 0, 200, this);
 				entities.add(door);
 
 				entities.add(new ButtonEntity(this, "sprites/button.png", 80, 661, door));
 
 				// button 7 and door 7
-				door = new DeathEntity("sprites/box.png", 1200, 520, this);
+				door = new DeathEntity("sprites/doorHorizontal.png", 1200, 520, this);
 				entities.add(door);
 
 				entities.add(new ButtonEntity(this, "sprites/button.png", 160, 301, door));
 
 				// button 8 and door 8
-				door = new DeathEntity("sprites/box.png", 520, 240, this);
+				door = new DeathEntity("sprites/doorVertical.png", 520, 240, this);
 				entities.add(door);
 
 				entities.add(new ButtonEntity(this, "sprites/button.png", 320, 301, door));
@@ -1383,12 +1391,12 @@ public class Game extends Canvas {
 				break;
 			case 6:
 				// create players and and put in correct location
-				playerOne = new PlayerEntity(this, "sprites/PlayerOneForward.png", 10, 560, initialFuelLevelOne);
-				playerTwo = new PlayerEntity(this, "sprites/PlayerTwoForward.png", 100, 560, initialFuelLevelTwo);
+				playerOne = new PlayerEntity(this, "sprites/P1F.png", 10, 560, initialFuelLevelOne);
+				playerTwo = new PlayerEntity(this, "sprites/P2F.png", 100, 560, initialFuelLevelTwo);
 
 				// create goal location for each player
-				goalOne = new GoalEntity("sprites/blankPlayer.gif", 1160, 40, playerOne);
-				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 1080, 40, playerTwo);
+				goalOne = new GoalEntity("sprites/playerOneExit.png", 1160, 40, playerOne);
+				goalTwo = new GoalEntity("sprites/playerTwoExit.png", 1080, 40, playerTwo);
 
 				// start platform
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 0, 640));
@@ -1402,34 +1410,34 @@ public class Game extends Canvas {
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 120, 680));
 
 				// death floor
-				entities.add(new DeathEntity("sprites/death.png", 160, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 200, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 240, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 280, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 320, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 360, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 400, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 440, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 480, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 520, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 560, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 600, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 640, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 680, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 720, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 760, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 800, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 840, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 880, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 920, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 960, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 1000, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 1040, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 1080, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 1120, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 1160, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 1200, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 1240, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 160, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 200, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 240, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 280, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 320, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 360, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 400, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 440, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 480, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 520, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 560, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 600, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 640, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 680, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 720, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 760, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 800, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 840, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 880, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 920, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 960, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 1000, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 1040, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 1080, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 1120, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 1160, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 1200, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 1240, 680, this));
 
 				// first level of platforms
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 280, 560));
@@ -1482,11 +1490,11 @@ public class Game extends Canvas {
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 1240, 120));
 
 				// shooter 1 - 3
-				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 1200, 520, "sprites/tempBullet.png", -80, 4000, 'l'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterLeft.png", 1200, 520, "sprites/bulletLeft.png", -80, 4000, 'l'));
 
-				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 40, 320, "sprites/tempBullet.png", 120, 3000, 'r'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterRight.png", 40, 320, "sprites/bulletRight.png", 120, 3000, 'r'));
 
-				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 960, 120, "sprites/tempBullet.png", -160, 3000, 'l'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterLeft.png", 960, 120, "sprites/bulletLeft.png", -160, 3000, 'l'));
 
 				// players and goals
 				entities.add(goalOne);
@@ -1496,12 +1504,12 @@ public class Game extends Canvas {
 				break;
 			case 7:
 				// create players and and put in correct location
-				playerOne = new PlayerEntity(this, "sprites/PlayerOneForward.png", 420, 20, initialFuelLevelOne);
-				playerTwo = new PlayerEntity(this, "sprites/PlayerTwoForward.png", 800, 20, initialFuelLevelTwo);
+				playerOne = new PlayerEntity(this, "sprites/P1F.png", 420, 20, initialFuelLevelOne);
+				playerTwo = new PlayerEntity(this, "sprites/P2F.png", 800, 20, initialFuelLevelTwo);
 
 				// create goal location for each player
-				goalOne = new GoalEntity("sprites/blankPlayer.gif", 1240, 560, playerOne);
-				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 0, 560, playerTwo);
+				goalOne = new GoalEntity("sprites/playerOneExit.png", 1240, 600, playerOne);
+				goalTwo = new GoalEntity("sprites/playerTwoExit.png", 0, 600, playerTwo);
 
 				// middle divider
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 600, 0));
@@ -1701,12 +1709,12 @@ public class Game extends Canvas {
 				break;
 			case 8:
 				// create players and and put in correct location
-				playerOne = new PlayerEntity(this, "sprites/PlayerOneForward.png", 20, 20, initialFuelLevelOne);
-				playerTwo = new PlayerEntity(this, "sprites/PlayerTwoForward.png", 100, 20, initialFuelLevelTwo);
+				playerOne = new PlayerEntity(this, "sprites/P1F.png", 20, 20, initialFuelLevelOne);
+				playerTwo = new PlayerEntity(this, "sprites/P2F.png", 100, 20, initialFuelLevelTwo);
 
 				// create goal location for each player
-				goalOne = new GoalEntity("sprites/blankPlayer.gif", 1240, 600, playerOne);
-				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 1160, 600, playerTwo);
+				goalOne = new GoalEntity("sprites/playerOneExit.png", 1240, 600, playerOne);
+				goalTwo = new GoalEntity("sprites/playerTwoExit.png", 1160, 600, playerTwo);
 
 				// bottom floor
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 0, 680));
@@ -1864,7 +1872,7 @@ public class Game extends Canvas {
 				entities.add(new MovableBlockEntity("sprites/box.png", 1040, 360, this));
 
 				// button and door
-				door = new DeathEntity("sprites/box.png", 560, 240, this);
+				door = new DeathEntity("sprites/doorVertical.png", 560, 240, this);
 				buttonOne = new ButtonEntity(this, "sprites/button.png", 1040, 301, door);
 				buttonTwo = new ButtonEntity(this, "sprites/button.png", 200, 421, door, buttonOne);
 
@@ -1874,9 +1882,9 @@ public class Game extends Canvas {
 				entities.add(buttonTwo);
 
 				// shot generators
-				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 1240, 80, "sprites/tempBullet.png", -160, 2000, 'l'));
-				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 1040, 520, "sprites/tempBullet.png", -160, 2000, 'l'));
-				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 1040, 640, "sprites/tempBullet.png", -160, 2000, 'l'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterLeft.png", 1240, 80, "sprites/bulletLeft.png", -160, 2000, 'l'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterLeft.png", 1040, 480, "sprites/bulletLeft.png", -160, 2000, 'l'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterLeft.png", 1040, 640, "sprites/bulletLeft.png", -160, 2000, 'l'));
 
 				// players and goals
 				entities.add(goalOne);
@@ -1886,12 +1894,12 @@ public class Game extends Canvas {
 				break;
 			case 9:
 				// create players and and put in correct location
-				playerOne = new PlayerEntity(this, "sprites/PlayerOneForward.png", 20, 20, initialFuelLevelOne);
-				playerTwo = new PlayerEntity(this, "sprites/PlayerTwoForward.png", 1180, 20, initialFuelLevelTwo);
+				playerOne = new PlayerEntity(this, "sprites/P1F.png", 20, 20, initialFuelLevelOne);
+				playerTwo = new PlayerEntity(this, "sprites/P2F.png", 1180, 20, initialFuelLevelTwo);
 
 				// create goal location for each player
-				goalOne = new GoalEntity("sprites/blankPlayer.gif", 1200, 560, playerOne);
-				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 40, 560, playerTwo);
+				goalOne = new GoalEntity("sprites/playerOneExit.png", 1200, 560, playerOne);
+				goalTwo = new GoalEntity("sprites/playerTwoExit.png", 40, 560, playerTwo);
 			
 				// top left platform
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 0, 120));
@@ -1926,40 +1934,40 @@ public class Game extends Canvas {
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 1240, 680));
 
 				// death floor
-				entities.add(new DeathEntity("sprites/death.png", 120, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 160, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 200, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 240, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 280, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 320, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 360, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 400, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 440, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 480, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 520, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 560, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 600, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 640, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 680, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 720, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 760, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 800, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 840, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 880, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 920, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 960, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 1000, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 1040, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 1080, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 1120, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 120, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 160, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 200, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 240, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 280, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 320, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 360, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 400, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 440, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 480, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 520, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 560, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 600, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 640, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 680, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 720, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 760, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 800, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 840, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 880, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 920, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 960, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 1000, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 1040, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 1080, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 1120, 680, this));
 
 				// left side shooters (top to bottom)
-				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 0, 200, "sprites/tempBullet.png", 120, 4000, 'r'));
-				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 0, 440, "sprites/tempBullet.png", 120, 4000, 'r'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterRight.png", 0, 200, "sprites/bulletRight.png", 120, 4000, 'r'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterRight.png", 0, 440, "sprites/bulletRight.png", 120, 4000, 'r'));
 
 				// right side shooter (top to bottom)
-				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 1240, 280, "sprites/tempBullet.png", -120, 4000, 'l'));
-				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 1240, 520, "sprites/tempBullet.png", -120, 4000, 'l'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterLeft.png", 1240, 280, "sprites/bulletLeft.png", -120, 4000, 'l'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterLeft.png", 1240, 520, "sprites/bulletLeft.png", -120, 4000, 'l'));
 
 				// players and goals
 				entities.add(goalOne);
@@ -1969,12 +1977,12 @@ public class Game extends Canvas {
 				break;
 			case 10:
 				// create players and and put in correct location
-				playerOne = new PlayerEntity(this, "sprites/blankPlayer.gif", 20, 560, initialFuelLevelOne);
-				playerTwo = new PlayerEntity(this, "sprites/blankPlayer.gif", 1205, 610, initialFuelLevelTwo);
+				playerOne = new PlayerEntity(this, "sprites/P1F.png", 20, 560, initialFuelLevelOne);
+				playerTwo = new PlayerEntity(this, "sprites/P2F.png", 1215, 600, initialFuelLevelTwo);
 
 				// create goal location for each player
-				goalOne = new GoalEntity("sprites/blankPlayer.gif", 20, 40, playerOne);
-				goalTwo = new GoalEntity("sprites/blankPlayer.gif", 80, 40, playerTwo);
+				goalOne = new GoalEntity("sprites/playerOneExit.png", 20, 40, playerOne);
+				goalTwo = new GoalEntity("sprites/playerTwoExit.png", 80, 40, playerTwo);
 
 				//platform 1
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 0, 680));
@@ -1998,30 +2006,30 @@ public class Game extends Canvas {
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 880, 640));
 
 				// death floor
-				entities.add(new DeathEntity("sprites/death.png", 120, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 160, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 200, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 240, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 280, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 320, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 360, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 400, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 120, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 160, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 200, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 240, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 280, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 320, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 360, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 400, 680, this));
 
-				entities.add(new DeathEntity("sprites/death.png", 520, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 560, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 600, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 640, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 680, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 720, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 760, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 800, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 520, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 560, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 600, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 640, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 680, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 720, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 760, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 800, 680, this));
 
-				entities.add(new DeathEntity("sprites/death.png", 920, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 960, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 1000, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 1040, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 1080, 680, this));
-				entities.add(new DeathEntity("sprites/death.png", 1120, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 920, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 960, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 1000, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 1040, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 1080, 680, this));
+				entities.add(new DeathEntity("sprites/slime.png", 1120, 680, this));
 				
 				// box that holds p2
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 680));
@@ -2034,12 +2042,12 @@ public class Game extends Canvas {
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 1120, 560));
 
 				//door and button
-				door = new DeathEntity("sprites/door.png", 1200, 560, this);
+				door = new DeathEntity("sprites/doorHorizontal.png", 1200, 560, this);
 				entities.add(door);
-				entities.add(new ButtonEntity(this, "sprites/button.png", 1120, 520, door));
+				entities.add(new ButtonEntity(this, "sprites/button.png", 1120, 541, door));
 
 				// shooter
-				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 1120, 600, "sprites/tempBullet.png", -120, 3000, 'l'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterLeft.png", 1120, 600, "sprites/bulletLeft.png", -120, 3000, 'l'));
 
 				// platform ladder
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 1160, 440));
@@ -2067,7 +2075,7 @@ public class Game extends Canvas {
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 40, 120));
 				entities.add(new TileEntity(this, "sprites/chocolate.png", 80, 120));
 
-				entities.add(new ShotGeneratorEntity(this, "sprites/death.png", 80, 160, "sprites/tempBullet.png", 120, 3000, 'r'));
+				entities.add(new ShotGeneratorEntity(this, "sprites/shooterRight.png", 80, 160, "sprites/bulletRight.png", 120, 3000, 'r'));
 
 				//add players and goal
 				entities.add(goalOne);
